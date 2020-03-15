@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,8 +26,8 @@ import hewson.logindemo2.vo.UserVo;
 public class login_activity extends AppCompatActivity implements View.OnClickListener {
     private EditText username_etittext;
     private EditText password_etittext;
-    private Button login_button;
-
+    private BootstrapButton bootstrapButton;
+    private BootstrapButton register_button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +36,12 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
         //获取用户名
         username_etittext=(EditText)findViewById(R.id.login_username);
         password_etittext=(EditText)findViewById(R.id.login_password);
-        login_button=(Button)findViewById((R.id.login_button));
+        bootstrapButton=(BootstrapButton)findViewById((R.id.login_button));
+        register_button=(BootstrapButton)findViewById((R.id.register_button));
 
         //注册点击事件
-        login_button.setOnClickListener(this);
+        bootstrapButton.setOnClickListener(this);
+        register_button.setOnClickListener(this);
     }
 
     @Override
@@ -87,6 +90,12 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
+
+            case R.id.register_button:
+                //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
+                Intent intent=new Intent(login_activity.this,register_activity.class);
+                login_activity.this.startActivity(intent);
+
         }
     }
 }

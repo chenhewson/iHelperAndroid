@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 public class SharePreferencesUtil {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+
+    //文件名包名
     private  static final String FILENAME="logindemo2";
 
     private static SharePreferencesUtil sharePreferencesUtil;

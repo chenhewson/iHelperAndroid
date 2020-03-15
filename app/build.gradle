@@ -37,4 +37,7 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    //bootstrap
+    implementation 'com.beardedhen:androidbootstrap:2.3.2'
 }
