@@ -1,5 +1,6 @@
 package hewson.logindemo2.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
@@ -17,6 +18,7 @@ import hewson.logindemo2.R;
 import hewson.logindemo2.common.Const;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
+import hewson.logindemo2.utils.SharePreferencesUtil;
 import hewson.logindemo2.vo.ServerResponse;
 import hewson.logindemo2.vo.UserVo;
 
@@ -58,10 +60,31 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                         //将泛型解析成UserVo对象：new TypeToken<ServerResponse<UserVo>>(){}.getType()
                         ServerResponse<UserVo> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<UserVo>>(){}.getType());
 
-                        //Toast是子线程，所以要加Looper.prepare()和Looper.loop()，否则报错
-                        Looper.prepare();
-                        Toast.makeText(login_activity.this,serverResponse.getData().getUsername(), Toast.LENGTH_LONG).show();
-                        Looper.loop();
+                        //保存登录信息,数据存储SharedPreferences
+                        if(serverResponse.getStatus()==0){
+
+                            //调用SharePreferences工具类，将用户信息保存成文件.
+                            SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(login_activity.this);
+                            util.putBoolean("isLogin",true);
+                            util.putString("user",msg);
+
+                            //读文件中的boolean类型
+                            boolean isLogin=util.readBoolean("isLogin");
+
+//                            //Toast是子线程，所以要加Looper.prepare()和Looper.loop()，否则报错
+                            Looper.prepare();
+                            Toast.makeText(login_activity.this,"欢迎！", Toast.LENGTH_SHORT).show();
+
+                            //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
+                            Intent intent=new Intent(login_activity.this,home_activity.class);
+                            login_activity.this.startActivity(intent);
+                            Looper.loop();
+
+                        }else{
+                            Looper.prepare();
+                            Toast.makeText(login_activity.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
+                            Looper.loop();
+                        }
                     }
                 });
         }
