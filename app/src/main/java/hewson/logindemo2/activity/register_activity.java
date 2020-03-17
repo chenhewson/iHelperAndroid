@@ -31,6 +31,11 @@ public class register_activity extends AppCompatActivity implements View.OnClick
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //隐藏顶部标题栏
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
         //获取用户名
         register_usernameEdit=(EditText)findViewById(R.id.register_username);
         register_passwordEdit=(EditText)findViewById(R.id.register_password);

@@ -21,6 +21,7 @@
         <activity
             android:name=".activity.bottom_avtivity"
             android:label="@string/title_activity_bottom_avtivity"></activity>
+
         <!-- 注册登录界面 -->
         <activity android:name=".activity.login_activity">
             <intent-filter>

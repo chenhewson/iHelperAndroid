@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="60dp"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/ico_loginbackground"
+    >
     <LinearLayout
-        android:padding="35dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_corner"
+        android:padding="50dp"
+        android:layout_margin="30dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="登录"
-            app:bootstrapBrand="primary"
+            app:bootstrapBrand="warning"
             app:bootstrapSize="lg"
             app:buttonMode="regular"
             app:showOutline="false"
@@ -47,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="注册"
-            app:bootstrapBrand="primary"
+            app:bootstrapBrand="warning"
             app:bootstrapSize="lg"
             app:buttonMode="regular"
             app:showOutline="true"
@@ -56,5 +60,4 @@
             />
 
     </LinearLayout>
-
 </RelativeLayout>
