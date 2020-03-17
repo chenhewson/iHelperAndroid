@@ -1,51 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hewson.logindemo2">
-
-<!--    添加网络权限-->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-<!--    读写文件权限-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
-<!--    application属性中解决http不能明码传输android:networkSecurityConfig="@xml/network_security_config"-->
+    <!-- 添加网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 读写文件权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.bootstrapApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
 
-
-        <activity android:name=".MainActivity">
-
-        </activity>
-
-<!--        注册登录界面-->
+<!--        底部按钮导航-->
+        <activity
+            android:name=".activity.bottom_avtivity"
+            android:label="@string/title_activity_bottom_avtivity"></activity>
+        <!-- 注册登录界面 -->
         <activity android:name=".activity.login_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-<!--        注册首页界面-->
-        <activity android:name=".activity.home_activity">
-
-        </activity>
-<!--        注册注册界面-->
-        <activity android:name=".activity.register_activity">
-
-        </activity>
+        </activity> <!-- 注册首页界面 -->
+        <activity android:name=".activity.home_activity"></activity> <!-- 注册注册界面 -->
+        <activity android:name=".activity.register_activity"></activity>
     </application>
-
-
 
 </manifest>

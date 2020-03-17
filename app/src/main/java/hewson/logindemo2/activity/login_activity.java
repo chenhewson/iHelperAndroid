@@ -89,12 +89,13 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                             Looper.loop();
                         }
                     }
-                });
+                });break;
 
             case R.id.register_button:
                 //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
                 Intent intent=new Intent(login_activity.this,register_activity.class);
                 login_activity.this.startActivity(intent);
+                break;
 
         }
     }

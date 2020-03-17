@@ -1,17 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="40sp">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="40sp"
-            android:text="注册"/>
+            android:orientation="vertical">
+            <TextView
+                android:drawableLeft="@mipmap/ic_launcher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="50dp"
+                android:text="注册"
 
+                android:layout_marginBottom="10dp"
+                />
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/register_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="用户名"
+                app:roundedCorners="true"
+                bootstrapSize="md"
+                app:bootstrapBrand="primary"
+                />
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/register_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:roundedCorners="true"
+                android:inputType="textPassword"
+                android:hint="密码"
+                android:layout_marginBottom="10dp"
+                bootstrapSize="md"
+                app:bootstrapBrand="primary"
+                />
+            <com.beardedhen.androidbootstrap.BootstrapEditText
+                android:id="@+id/register_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:layout_marginBottom="10dp"
+                app:roundedCorners="true"
+                android:hint="邮箱地址"
+                bootstrapSize="md"
+                app:bootstrapBrand="primary"
+                />
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:id="@+id/confirmRegister_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="确认"
+                app:bootstrapBrand="primary"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:showOutline="false"
+                app:roundedCorners="true"
+                android:layout_marginBottom="10dp"
+                />
+        </LinearLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,15 @@ public class ServerResponse<T> {
     private int status;//状态 0：接口调用成功
     private T data;//泛型，当status=0，将返回的数据封装到data中
     private String msg;//给前端的提示信息
+    private String success;
+
+    public void setSuccess(String success) {
+        this.success = success;
+    }
+
+    public String getSuccess() {
+        return success;
+    }
 
     //构造方法
     public ServerResponse(){}

@@ -1,6 +1,6 @@
 package hewson.logindemo2.utils;
 /*
-* 用单例封装SharePreferences
+* 用单例封装SharePreferences,用于将用户信息保存到本地
 * */
 import android.content.Context;
 import android.content.SharedPreferences;
