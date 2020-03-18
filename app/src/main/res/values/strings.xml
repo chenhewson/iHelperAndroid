@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name">logindemo2</string>
+    <string name="app_name">智慧帮</string>
     <string name="title_activity_bottom_avtivity">bottom_avtivity</string>
     <string name="title_home">首页</string>
     <string name="title_dashboard">感兴趣</string>
-    <string name="title_notifications">聊天</string>
+    <string name="title_notifications">消息</string>
     <string name="title_mypage">我的</string>
+
+<!--    自定义-->
+    <string name="home_icon">&#xe610;</string>
+
 </resources>
