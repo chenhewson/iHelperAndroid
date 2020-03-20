@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/container_myinfo"
-        android:background="@drawable/shape_corner_down"
+        android:background="@drawable/shape_corner"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="150dp">
