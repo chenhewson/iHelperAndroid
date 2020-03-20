@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class SharePreferencesUtil {
     private SharedPreferences sharedPreferences;
@@ -62,6 +63,7 @@ public class SharePreferencesUtil {
         Gson gson=new Gson();
         return gson.fromJson(string,clazz);
     }
+
 
     //删除
     public void delete(String key){

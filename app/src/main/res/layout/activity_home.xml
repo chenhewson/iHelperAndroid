@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
+        android:paddingTop="10dp"
+        android:background="@color/colorAccent"
         android:id="@+id/nav"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true">
 
         <LinearLayout
@@ -16,6 +18,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/home_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_home_selected" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,6 +39,12 @@
             android:layout_width="0dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/star_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_star_unselect" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,11 +58,13 @@
             android:layout_width="0dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+            <ImageView
+                android:id="@+id/addorder_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:text="新增"/>
+                android:src="@mipmap/icon_add_unselect" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,6 +73,12 @@
             android:layout_width="0dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/message_icon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_message_unselect" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,6 +92,13 @@
             android:layout_width="0dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/me_icon"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_me_unselect" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

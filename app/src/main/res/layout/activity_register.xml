@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ico_loginbackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -16,15 +15,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:drawableLeft="@mipmap/ic_launcher"
+            <LinearLayout
+                android:paddingBottom="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="50dp"
-                android:text="注册"
-
-                android:layout_marginBottom="10dp"
-                />
+                >
+                <ImageView
+                    android:layout_width="70sp"
+                    android:layout_height="70sp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/icon_me_unselect"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="智慧帮"
+                    android:textSize="40sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
             <com.beardedhen.androidbootstrap.BootstrapEditText
                 android:id="@+id/register_username"
                 android:layout_width="match_parent"
@@ -62,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="确认"
+                android:textStyle="bold"
                 app:bootstrapBrand="primary"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"
@@ -69,6 +77,10 @@
                 app:roundedCorners="true"
                 android:layout_marginBottom="10dp"
                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="注册即代表同意《智慧帮协议》"/>
         </LinearLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

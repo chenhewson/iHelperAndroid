@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -74,8 +72,11 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
 
                             //调用SharePreferences工具类，将用户信息保存成文件.
                             SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(login_activity.this);
+                            util.delete("user");
+                            util.delete("isLogin");
                             util.putBoolean("isLogin",true);
-                            util.putString("user",msg);
+                            util.putString("user",gson.toJson(serverResponse.getData()));
+                            System.out.println(msg);
 
                             //读文件中的boolean类型
                             boolean isLogin=util.readBoolean("isLogin");

@@ -2,6 +2,7 @@ package hewson.logindemo2.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
     LinearLayout bottom_message_linearlayout;
     LinearLayout bottom_myinfo_linearlayout;
 
+
     public static String HOME_FRAGMENT_TAG="HOME_FRAGMENT_TAG";
     public static String star_FRAGMENT_TAG="star_FRAGMENT_TAG";
     public static String addorder_FRAGMENT_TAG="addorder_FRAGMENT_TAG";
@@ -33,6 +35,14 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //隐藏顶部标题栏
+        if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
+        }
+
+        //启动就进入首页
+        attachFragment(HOME_FRAGMENT_TAG);
 
         bottom_home_linearlayout=(LinearLayout)findViewById(R.id.bottom_home);
         bottom_star_linearlayout=(LinearLayout)findViewById(R.id.bottom_star);
@@ -46,10 +56,6 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
         bottom_addorder_linearlayout.setOnClickListener(this);
         bottom_message_linearlayout.setOnClickListener(this);
         bottom_myinfo_linearlayout.setOnClickListener(this);
-
-
-
-
     }
 
     //activity关联fragment
@@ -57,22 +63,27 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bottom_home:
+                resetAllico(HOME_FRAGMENT_TAG);
                 attachFragment(HOME_FRAGMENT_TAG);
                 break;
 
             case R.id.bottom_star:
+                resetAllico(star_FRAGMENT_TAG);
                 attachFragment(star_FRAGMENT_TAG);
                 break;
 
             case R.id.bottom_addorder:
+                resetAllico(addorder_FRAGMENT_TAG);
                 attachFragment(addorder_FRAGMENT_TAG);
                 break;
 
             case R.id.bottom_message:
+                resetAllico(message_FRAGMENT_TAG);
                 attachFragment(message_FRAGMENT_TAG);
                 break;
 
             case R.id.bottom_myinfo:
+                resetAllico(myinfo_FRAGMENT_TAG);
                 attachFragment(myinfo_FRAGMENT_TAG);
                 break;
         }
@@ -118,7 +129,43 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
         fragmentTransaction.replace(R.id.fragment_content,fragment,fragmentTag);
 
         fragmentTransaction.commit();
+    }
 
+    private void resetAllico(String selected){
+        ImageView home_icon;
+        ImageView star_icon;
+        ImageView addorder_icon;
+        ImageView message_icon;
+        ImageView me_icon;
 
+        home_icon=(ImageView)findViewById(R.id.home_icon);
+        star_icon=(ImageView)findViewById(R.id.star_icon);
+        addorder_icon=(ImageView)findViewById(R.id.addorder_icon);
+        message_icon=(ImageView)findViewById(R.id.message_icon);
+        me_icon=(ImageView)findViewById(R.id.me_icon);
+
+        home_icon.setImageResource(R.mipmap.icon_home_unselect);
+        star_icon.setImageResource(R.mipmap.icon_star_unselect);
+        addorder_icon.setImageResource(R.mipmap.icon_add_unselect);
+        message_icon.setImageResource(R.mipmap.icon_message_unselect);
+        me_icon.setImageResource(R.mipmap.icon_me_unselect);
+
+        switch (selected){
+            case "HOME_FRAGMENT_TAG":
+                home_icon.setImageResource(R.mipmap.icon_home_selected);
+                break;
+            case "star_FRAGMENT_TAG":
+                star_icon.setImageResource(R.mipmap.icon_star_selected);
+                break;
+            case "addorder_FRAGMENT_TAG":
+                addorder_icon.setImageResource(R.mipmap.icon_add_selected);
+                break;
+            case "message_FRAGMENT_TAG":
+                message_icon.setImageResource(R.mipmap.icon_message_selected);
+                break;
+            case "myinfo_FRAGMENT_TAG":
+                me_icon.setImageResource(R.mipmap.icon_me_selected);
+                break;
+        }
     }
 }
