@@ -70,6 +70,9 @@
         <activity android:name=".activity.fragment.message_fragment"></activity>
         <activity android:name=".activity.fragment.myinfo_fragment"></activity>
         <activity android:name=".activity.fragment.star_fragment"></activity>
+
+<!--        listview_home-->
+        <activity android:name=".activity.listview.listview_home"></activity>
     </application>
 
 </manifest>

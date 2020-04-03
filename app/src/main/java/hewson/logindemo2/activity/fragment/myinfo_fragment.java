@@ -36,7 +36,7 @@ public class myinfo_fragment extends Fragment {
         //判断用户是否登录,Activity本身就是一个Context，可以直接作为参数
         boolean isLogin = SharePreferencesUtil.getSharePreferencesInstance(getActivity()).readBoolean("isLogin");
         if (isLogin) {
-            //已经登录
+            //已经登录,将json解析成UserVo实体类
             UserVo userVo = (UserVo) SharePreferencesUtil.getSharePreferencesInstance(getActivity()).readObject("user", UserVo.class);
             textview_username.setText(userVo.getUsername());
             textview_email.setText("E-mail:"+userVo.gettEmail());
