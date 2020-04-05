@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import hewson.logindemo2.R;
-
+/*
+* 用于操作listview_home，填充数据*/
 public class Myadapter_home extends BaseAdapter {
     List<Map<String,Object>> list;
 

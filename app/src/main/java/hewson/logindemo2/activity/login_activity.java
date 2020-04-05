@@ -56,7 +56,8 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                 String password=password_etittext.getText().toString();
 
                 //okhttp请求
-                OkhttpUtils.get(Const.IpAddress+"protal/user/login.do?username="+username+"&password="+password,new OkHttpCallback(){
+                OkhttpUtils.get(Const.IpAddress+"protal/user/login.do?username="+username+"&password="+password,
+                        new OkHttpCallback(){
                     @Override
                     public void OnFinish(String status, String msg) {
                         super.OnFinish(status, msg);
