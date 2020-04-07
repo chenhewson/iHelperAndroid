@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+<!--    name随便写，path是.表示任意路径-->
+    <external-path
+        name="."
+        path="external_files"/>
+</paths>

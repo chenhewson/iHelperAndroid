@@ -42,11 +42,12 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="OP98PH7sZk9UlRmNP89VXi3QByNEGsiI" />
 
-        <!--定义百度地图的服务，用于定位-->
+        <!--定义百度地图的服务，用于定位.间隔定位必须开启此服务-->
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote">
         </service>
+
 
 
         <!-- 注册登录界面 -->
@@ -71,8 +72,22 @@
         <activity android:name=".activity.fragment.myinfo_fragment"></activity>
         <activity android:name=".activity.fragment.star_fragment"></activity>
 
-<!--        listview_home-->
-        <activity android:name=".activity.listview.listview_home"></activity>
+
+        <!-- 百度地图activity -->
+        <activity android:name=".activity.PoiSugSearchDemo"></activity>
+        <activity android:name=".activity.GeoCoderDemo"></activity>
+
+
+        <provider
+            android:authorities="com.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+
     </application>
 
 </manifest>

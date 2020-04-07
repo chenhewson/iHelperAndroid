@@ -63,7 +63,6 @@ public class Myadapter_home extends BaseAdapter {
         item_userAvator.setImageResource((Integer) map.get("item_userAvator"));//后台需要重新定义一个实体类来保存复合信息
         item_userName.setText((String)map.get("item_userName"));
         item_orderTitle.setText((String)map.get("item_orderTitle"));
-
         return view;
     }
 }

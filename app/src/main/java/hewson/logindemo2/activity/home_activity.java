@@ -125,7 +125,7 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
 
         }
 
-        //把gragment_home.xml里面的id为fragment_content的占位布局替换掉
+        //把fragment_home.xml里面的id为fragment_content的占位布局替换掉
         fragmentTransaction.replace(R.id.fragment_content,fragment,fragmentTag);
 
         fragmentTransaction.commit();
@@ -167,5 +167,10 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
                 me_icon.setImageResource(R.mipmap.icon_me_selected);
                 break;
         }
+    }
+
+    /*暂停所有fragment*/
+    public void pauseAllFragment(){
+        
     }
 }

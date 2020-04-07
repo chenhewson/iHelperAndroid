@@ -17,4 +17,9 @@ public class star_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_star,container,false);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 }

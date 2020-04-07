@@ -53,7 +53,6 @@ public class home_fragment extends Fragment {
     public void onResume() {
         super.onResume();
         System.out.println("onResume()");
-
     }
 
     @Override
