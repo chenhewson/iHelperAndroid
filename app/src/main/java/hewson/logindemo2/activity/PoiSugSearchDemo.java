@@ -65,7 +65,7 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
     //确认按钮
     private BootstrapButton button_confirmaddress;
 
-    //传值
+    //完整地址
     private String key;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -154,10 +154,22 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        String[] strings=String.valueOf(simpleAdapter.getItem(i)).split(",");
+                        System.out.println(simpleAdapter.getItem(i));
+                        //去除花括号，空格
+                        String metaAddress=simpleAdapter.getItem(i).toString();
+                        String str0=metaAddress.replaceAll(" ","");
+                        String str1=str0.replaceAll("\\{","");
+                        String str2=str1.replaceAll("\\}","");
+                        String[] strings=str2.split(",");
+                        String city=strings[0].replaceAll("city=","");
                         String key=strings[1].replaceAll("key=","");
-                        mKeyWordsView.setText(key);
-                        setKey(key);
+                        String dis=strings[2].replaceAll("dis=","");
+
+                        //完整地址
+                        String address=city+dis+key;
+                        System.out.println(address);
+                        setKey(address);
+                        mKeyWordsView.setText(getKey());
                     }
                 }
         );
