@@ -75,7 +75,6 @@
 
         <!-- 百度地图activity -->
         <activity android:name=".activity.PoiSugSearchDemo"></activity>
-        <activity android:name=".activity.GeoCoderDemo"></activity>
 
 
         <provider
