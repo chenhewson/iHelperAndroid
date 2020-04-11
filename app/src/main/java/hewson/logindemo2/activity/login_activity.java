@@ -27,6 +27,8 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
     private EditText password_etittext;
     private BootstrapButton bootstrapButton;
     private BootstrapButton register_button;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +91,9 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                             //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
                             Intent intent=new Intent(login_activity.this,home_activity.class);
                             login_activity.this.startActivity(intent);
+                            //关闭当前activity
+                            login_activity.this.finish();
                             Looper.loop();
-
                         }else{
                             Looper.prepare();
                             Toast.makeText(login_activity.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
@@ -107,4 +110,10 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
 
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 }

@@ -1,5 +1,6 @@
 package hewson.logindemo2.activity.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+
 import hewson.logindemo2.R;
+import hewson.logindemo2.activity.login_activity;
+import hewson.logindemo2.activity.register_activity;
 import hewson.logindemo2.utils.SharePreferencesUtil;
 import hewson.logindemo2.vo.UserVo;
 
-public class myinfo_fragment extends Fragment {
+public class myinfo_fragment extends Fragment implements View.OnClickListener{
     TextView textview_email;
     TextView textview_username;
     ImageView imageview_avator;
+    BootstrapButton exit_login;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,6 +32,9 @@ public class myinfo_fragment extends Fragment {
         textview_email=view.findViewById(R.id.textview_email);
         textview_username=view.findViewById(R.id.textview_username);
         imageview_avator=view.findViewById(R.id.imageview_avator);
+        exit_login=view.findViewById(R.id.button_exit);
+
+        exit_login.setOnClickListener(this);
         return view;
     }
 
@@ -51,5 +60,19 @@ public class myinfo_fragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button_exit:
+                SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(getActivity());
+                util.delete("user");
+                util.delete("isLogin");
+                //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
+                Intent intent=new Intent(getActivity(), login_activity.class);
+                getActivity().startActivity(intent);
+                break;
+        }
     }
 }

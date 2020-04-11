@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -25,6 +28,7 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -37,12 +41,13 @@ import java.util.Map;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.activity.fragment.addorder_fragment;
+import hewson.logindemo2.utils.SharePreferencesUtil;
 
 
 /**
  * 介绍地点检索输入提示
  */
-public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggestionResultListener {
+public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggestionResultListener,View.OnClickListener{
     // 搜索模块，也可去掉地图模块独立使用
     private GeoCoder mSearch = null;
     private BaiduMap mBaiduMap = null;
@@ -57,8 +62,11 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
     private ListView mSugListView;
     private SimpleAdapter simpleAdapter;
 
+    //确认按钮
+    private BootstrapButton button_confirmaddress;
 
-
+    //传值
+    private String key;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +85,12 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
         mSugListView = (ListView) findViewById(R.id.sug_list);
         mKeyWordsView = (AutoCompleteTextView) findViewById(R.id.searchkey);
         mKeyWordsView.setThreshold(1);
+
+        //获取button
+        button_confirmaddress=(BootstrapButton)findViewById((R.id.button_confirmaddress));
+
+        //注册点击事件
+        button_confirmaddress.setOnClickListener(this);
 
         // 当输入关键字变化时，动态更新建议列表
         mKeyWordsView.addTextChangedListener(new TextWatcher() {
@@ -142,9 +156,8 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         String[] strings=String.valueOf(simpleAdapter.getItem(i)).split(",");
                         String key=strings[1].replaceAll("key=","");
-
-
-                        onDestroy();
+                        mKeyWordsView.setText(key);
+                        setKey(key);
                     }
                 }
         );
@@ -162,5 +175,35 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
         mSearch.geocode(new GeoCodeOption()
                 .city("福建")// 城市
                 .address(mEditGeoCodeKey.getText().toString())); // 地址
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button_confirmaddress:
+                if(key!=null&&key!=""){
+                    FragmentManager fragmentManager=getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+                    Fragment addorder_fragment=fragmentManager.findFragmentByTag("addorder_FRAGMENT_TAG");
+                    if(addorder_fragment==null){
+                        //调用SharePreferences工具类，将用户信息保存成文件.
+                        SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(PoiSugSearchDemo.this);
+                        util.delete("address");
+                        util.putString("address",getKey());
+                        PoiSugSearchDemo.this.finish();
+                    }
+
+
+                }
+                break;
+        }
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

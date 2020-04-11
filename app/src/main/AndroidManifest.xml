@@ -40,7 +40,7 @@
 <!--        填写刚申请的API_KEY-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="OP98PH7sZk9UlRmNP89VXi3QByNEGsiI" />
+            android:value="qYZ68N7etAWQVeanYI8X4HspY6NCDQwC" />
 
         <!--定义百度地图的服务，用于定位.间隔定位必须开启此服务-->
         <service android:name="com.baidu.location.f"

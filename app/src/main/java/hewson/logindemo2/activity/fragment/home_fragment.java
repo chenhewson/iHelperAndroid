@@ -112,6 +112,7 @@ public class home_fragment extends Fragment {
         );
         //3.设置适配器,用自定义adapter
         myadapter_home.setList(listmap);//给数据
+        myadapter_home.notifyDataSetChanged();
         listView_home.setAdapter(myadapter_home);
     }
 }
