@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -41,6 +42,7 @@ import java.util.Map;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.activity.fragment.addorder_fragment;
+import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.SharePreferencesUtil;
 
 
@@ -71,6 +73,7 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poisugsearch);
+        ActivityCollectorUtil.addActivity(PoiSugSearchDemo.this);
         //隐藏顶部标题栏
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
@@ -126,6 +129,7 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
     @Override
     public void onGetSuggestionResult(SuggestionResult suggestionResult) {
         if (suggestionResult == null || suggestionResult.getAllSuggestions() == null) {
+            Log.e("suggestionResult","suggestionResult为空");
             return;
         }
 
@@ -180,6 +184,7 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
     protected void onDestroy() {
         super.onDestroy();
         mSuggestionSearch.destroy();
+        ActivityCollectorUtil.removeActivity(PoiSugSearchDemo.this);
     }
 
     public void searchButtonProcess(View v) {
@@ -191,21 +196,24 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
 
     @Override
     public void onClick(View v) {
+        Log.e("button_confirmaddress","onclick执行");
         switch (v.getId()){
             case R.id.button_confirmaddress:
+                Log.e("button_confirmaddress","case执行");
                 if(key!=null&&key!=""){
+                    Log.e("button_confirmaddress","if1执行");
                     FragmentManager fragmentManager=getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
                     Fragment addorder_fragment=fragmentManager.findFragmentByTag("addorder_FRAGMENT_TAG");
                     if(addorder_fragment==null){
+                        Log.e("button_confirmaddress","if2执行");
                         //调用SharePreferences工具类，将用户信息保存成文件.
                         SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(PoiSugSearchDemo.this);
                         util.delete("address");
                         util.putString("address",getKey());
                         PoiSugSearchDemo.this.finish();
                     }
-
-
+                    Log.e("button_confirmaddress","button_confirmaddress执行");
                 }
                 break;
         }

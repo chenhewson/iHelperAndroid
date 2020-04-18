@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.SharePreferencesUtil;
@@ -33,7 +34,7 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        ActivityCollectorUtil.addActivity(login_activity.this);
         //隐藏顶部标题栏
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
@@ -114,6 +115,7 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollectorUtil.removeActivity(login_activity.this);
     }
 
 }

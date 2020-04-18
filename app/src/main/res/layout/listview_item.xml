@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:layout_margin="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,27 +8,104 @@
 <!--    descendantFocusability用来夺回焦点-->
     <ImageView
         android:id="@+id/item_userAvator"
-        android:src="@drawable/ic_launcher_background"
         android:layout_width="200px"
         android:layout_height="200px"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_launcher_background" />
 
-    <TextView
-        android:id="@+id/item_userName"
+
+
+    <LinearLayout
+        android:id="@+id/linearlayout_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/item_userAvator"
-        android:textSize="24sp"
-        android:hint="qq名"/>
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/item_userAvator">
+        <TextView
+            android:id="@+id/item_orderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_userName"
+            android:layout_alignLeft="@id/item_userName"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            android:textColor="@color/colorBlack"
+            android:text="任务标题"
+            android:singleLine="true"/>
+        <TextView
+            android:id="@+id/item_userName"
+            android:layout_width="200dp"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/item_userAvator"
+            android:hint="任务详情"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/ico_rmb"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/item_money"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textSize="17dp"
+                android:textColor="@color/colorRed"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/item_distinct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_userName"
+                android:layout_alignLeft="@id/item_userName"
+                android:singleLine="true"
+                android:hint="行政区"/>
+<!--            竖线-->
+            <View
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_width="1dp"
+                android:layout_height="15dp"
+                android:background="#c8c8c8"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:id="@+id/item_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_userName"
+                android:layout_alignLeft="@id/item_userName"
+                android:textColor="@color/colorTopBar"
+                android:text="距离"/>
+        </LinearLayout>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/item_orderTitle"
+    <LinearLayout
+        android:id="@+id/linearlayout_heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_userName"
-        android:layout_alignLeft="@id/item_userName"
-        android:layout_marginTop="10dp"
-        android:hint="qq签名QQ签名QQ签名"/>
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/linearlayout_info"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageview_heart"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_heart"/>
+    </LinearLayout>
 
 </RelativeLayout>

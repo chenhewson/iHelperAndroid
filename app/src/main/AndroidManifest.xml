@@ -27,6 +27,9 @@
 <!--    android 9.0上使用前台服务，需要添加权限-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+<!--    腾讯聊天-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".application.bootstrapApplication"
         android:allowBackup="true"
@@ -40,7 +43,7 @@
 <!--        填写刚申请的API_KEY-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="qYZ68N7etAWQVeanYI8X4HspY6NCDQwC" />
+            android:value="qYZ68N7etAWQVeanYI8X4HspY6NCDQwC"/>
 
         <!--定义百度地图的服务，用于定位.间隔定位必须开启此服务-->
         <service android:name="com.baidu.location.f"
@@ -76,7 +79,10 @@
         <!-- 百度地图activity -->
         <activity android:name=".activity.PoiSugSearchDemo"></activity>
 
+<!--        任务详情界面-->
+        <activity android:name=".activity.OrderDetail"></activity>
 
+<!--        相机-->
         <provider
             android:authorities="com.fileprovider"
             android:name="androidx.core.content.FileProvider"

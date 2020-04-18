@@ -1,6 +1,7 @@
 package hewson.logindemo2.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,9 @@ import hewson.logindemo2.activity.fragment.home_fragment;
 import hewson.logindemo2.activity.fragment.message_fragment;
 import hewson.logindemo2.activity.fragment.myinfo_fragment;
 import hewson.logindemo2.activity.fragment.star_fragment;
+import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.ActivityCollectorUtil;
+import hewson.logindemo2.utils.BDLocationUtils;
 
 public class home_activity extends AppCompatActivity implements View.OnClickListener {
     LinearLayout bottom_home_linearlayout;
@@ -31,9 +35,17 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
     public static String addorder_FRAGMENT_TAG="addorder_FRAGMENT_TAG";
     public static String message_FRAGMENT_TAG="message_FRAGMENT_TAG";
     public static String myinfo_FRAGMENT_TAG="myinfo_FRAGMENT_TAG";
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollectorUtil.removeActivity(home_activity.this);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCollectorUtil.addActivity(home_activity.this);
         setContentView(R.layout.activity_home);
 
         //隐藏顶部标题栏
@@ -56,6 +68,11 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
         bottom_addorder_linearlayout.setOnClickListener(this);
         bottom_message_linearlayout.setOnClickListener(this);
         bottom_myinfo_linearlayout.setOnClickListener(this);
+
+        //获取经纬度
+        BDLocationUtils bdLocationUtils = new BDLocationUtils(home_activity.this);
+        bdLocationUtils.doLocation();//开启定位
+        bdLocationUtils.mLocationClient.start();//开始定位，Const写死了
     }
 
     //activity关联fragment
@@ -127,6 +144,7 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
 
         //把fragment_home.xml里面的id为fragment_content的占位布局替换掉
         fragmentTransaction.replace(R.id.fragment_content,fragment,fragmentTag);
+        Log.e("fragmentTransactionreplace","fragmentTransactionreplace执行");
 
         fragmentTransaction.commit();
     }

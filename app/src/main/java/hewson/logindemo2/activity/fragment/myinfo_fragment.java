@@ -17,6 +17,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import hewson.logindemo2.R;
 import hewson.logindemo2.activity.login_activity;
 import hewson.logindemo2.activity.register_activity;
+import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.SharePreferencesUtil;
 import hewson.logindemo2.vo.UserVo;
 
@@ -69,6 +70,7 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
                 SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(getActivity());
                 util.delete("user");
                 util.delete("isLogin");
+                ActivityCollectorUtil.finishAllActivity();
                 //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
                 Intent intent=new Intent(getActivity(), login_activity.class);
                 getActivity().startActivity(intent);

@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.vo.ServerResponse;
@@ -26,11 +27,18 @@ public class register_activity extends AppCompatActivity implements View.OnClick
     private EditText register_passwordEdit;
     private EditText register_emailEdit;
     private BootstrapButton confirmRegister_button;
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollectorUtil.removeActivity(this);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        ActivityCollectorUtil.addActivity(this);
         //隐藏顶部标题栏
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
@@ -45,6 +53,7 @@ public class register_activity extends AppCompatActivity implements View.OnClick
         //注册点击事件
         confirmRegister_button.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View v) {

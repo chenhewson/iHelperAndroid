@@ -22,4 +22,9 @@ public class star_fragment extends Fragment {
     public void onPause() {
         super.onPause();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

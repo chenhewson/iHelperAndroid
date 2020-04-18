@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import com.baidu.location.LocationClient;
 
 import hewson.logindemo2.R;
-import hewson.logindemo2.activity.GeoCoderDemo;
 import hewson.logindemo2.activity.PoiSugSearchDemo;
 import hewson.logindemo2.utils.SharePreferencesUtil;
 
@@ -135,7 +134,4 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
             util.delete("address");
         }
     }
-
-
-
 }

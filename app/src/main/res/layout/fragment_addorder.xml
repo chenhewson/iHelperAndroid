@@ -234,12 +234,7 @@
                         app:roundedCorners="true"
                         android:layout_marginBottom="10dp"
                         />
-
                 </LinearLayout>
-
-
-
-
             </LinearLayout>
 
             <TextView

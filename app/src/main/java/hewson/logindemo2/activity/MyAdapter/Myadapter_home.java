@@ -57,12 +57,21 @@ public class Myadapter_home extends BaseAdapter {
         ImageView item_userAvator=(ImageView)view.findViewById(R.id.item_userAvator);
         TextView item_userName=(TextView)view.findViewById(R.id.item_userName);
         TextView item_orderTitle=(TextView)view.findViewById(R.id.item_orderTitle);
+        TextView item_money=(TextView)view.findViewById(R.id.item_money);
+        TextView item_distinct=(TextView)view.findViewById(R.id.item_distinct);
+        TextView item_distance=(TextView)view.findViewById(R.id.item_distance);
 
         //注入值,position是当前item的下标,这里map的key要和addorder_fragment里面的map对应
         Map map=list.get(position);
         item_userAvator.setImageResource((Integer) map.get("item_userAvator"));//后台需要重新定义一个实体类来保存复合信息
         item_userName.setText((String)map.get("item_userName"));
         item_orderTitle.setText((String)map.get("item_orderTitle"));
+        item_money.setText(String.valueOf(map.get("money")));
+        item_distinct.setText((String) map.get("address"));
+        item_distance.setText((String)map.get("distance"));
+
+//        map.put("distance",keyStr);
+//        map.put("address",taskVo.gettAddress());
         return view;
     }
 }

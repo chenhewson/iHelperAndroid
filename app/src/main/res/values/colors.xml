@@ -8,6 +8,9 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#808080</color>
 
+    <color name="colorRed">#d81e06</color>
+    <color name="colorBlack">#000000</color>
+
 <!--    百度地图-->
     <color name="dkgray">#FF444444</color>
     <color name="white">#FFF</color>
