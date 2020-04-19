@@ -50,7 +50,6 @@ public class home_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home,container,false);
         listView_home=view.findViewById(R.id.listview_home);
-        myadapter_home=new Myadapter_home(getContext());
         getOrderList();
         Log.i("home_fragment","onCreateView");
         return view;
@@ -73,6 +72,7 @@ public class home_fragment extends Fragment {
     }
 
     public void getOrderList(){
+        myadapter_home=new Myadapter_home(getContext());
         //1.拿到listview对象
 
         //获取保存在SharePreferences中当前登录的user
@@ -99,7 +99,6 @@ public class home_fragment extends Fragment {
                         ServerResponse<TreeMap<Double,TaskVo>> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<TreeMap<Double,TaskVo>>>(){}.getType());
 
 //                        //2.获取数据源
-//                        List<TaskVo> list = serverResponse.getData();
                         List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
 
                         //2、获取数据源
@@ -107,7 +106,7 @@ public class home_fragment extends Fragment {
                         Set<Double> keys = treeMap.keySet();
                         List<TaskVo> list =new LinkedList<TaskVo>();
                         if(treeMap.size()!=0){
-                            listmap.clear();
+//                            listmap.clear();
                             for(Iterator iter = keys.iterator(); iter.hasNext();){
                                 Map<String,Object> map=new HashMap<String,Object>();
                                 Double keyStr = (Double) iter.next();//获取距离

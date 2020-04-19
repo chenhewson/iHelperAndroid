@@ -13,12 +13,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.tencent.imsdk.TIMConversationType;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 
 import hewson.logindemo2.R;
+import hewson.logindemo2.activity.chat.ChatActivity;
+import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.Constants;
+import hewson.logindemo2.utils.OkHttpCallback;
+import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.SharePreferencesUtil;
+import hewson.logindemo2.vo.ServerResponse;
 import hewson.logindemo2.vo.UserVo;
 
 public class OrderDetail extends AppCompatActivity implements View.OnClickListener{
+    private String taskUsername;
     //获取item布局中的组件的id
     ImageView item_userAvator;
     TextView item_userName;
@@ -66,15 +76,38 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
         String taskid=bundle.getString("taskid");
         Integer finisherid=userVo.getUserid();
+
+        OkhttpUtils.get(Const.IpAddress+"protal/Task/getUsername.do?taskId="+taskid,
+                new OkHttpCallback(){
+                    @Override
+                    public void OnFinish(String status, String msg) {
+                        super.OnFinish(status, msg);
+                        //解析数据,将json格式的msg转为ServerResponse对象
+                        Gson gson = new Gson();
+
+                        //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
+                        ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
+
+                        if(serverResponse.getStatus()==0){
+                            String username=serverResponse.getData().replaceAll("\"","");
+                            taskUsername=username;
+                        }
+                    }
+                });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_start_message:
-                Bundle bundle = new Bundle();
-                bundle.putString("userid",item_userName.getText().toString());
-                Intent intent=new Intent(OrderDetail.this,send_message_activity.class);
+
+                ChatInfo chatInfo = new ChatInfo();
+                chatInfo.setType(TIMConversationType.C2C);//c2c为单聊模式
+                chatInfo.setId(taskUsername);//单聊唯一标识,单聊模式为用户名
+                chatInfo.setChatName(taskUsername);//用户名
+                Intent intent = new Intent(OrderDetail.this, ChatActivity.class);//ChatActivity就是用于控制聊天界面的
+                intent.putExtra(Constants.CHAT_INFO, chatInfo);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 OrderDetail.this.startActivity(intent);
                 break;
         }

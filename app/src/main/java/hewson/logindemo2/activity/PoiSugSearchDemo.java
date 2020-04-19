@@ -109,13 +109,14 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 if (cs.length() <= 0) {
+                    Log.e("onTextChanged","cs.length() <= 0");
                     return;
                 }
-
+                Log.e("onTextChanged","cs.length() > 0");
                 // 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                 mSuggestionSearch.requestSuggestion((new SuggestionSearchOption())
                         .keyword(cs.toString()) // 关键字
-                        .city("福建")); // 城市
+                        .city("厦门")); // 城市
             }
         });
     }

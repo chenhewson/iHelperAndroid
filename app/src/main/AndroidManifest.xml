@@ -40,7 +40,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<!--        填写刚申请的API_KEY-->
+<!--        百度地图填写刚申请的API_KEY-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="qYZ68N7etAWQVeanYI8X4HspY6NCDQwC"/>
@@ -82,8 +82,8 @@
 <!--        任务详情界面-->
         <activity android:name=".activity.OrderDetail"></activity>
 
-        <!--        发送消息-->
-        <activity android:name=".activity.send_message_activity"></activity>
+        <!--        腾讯聊天-->
+        <activity android:name=".activity.chat.ChatActivity"></activity>
 
 
 

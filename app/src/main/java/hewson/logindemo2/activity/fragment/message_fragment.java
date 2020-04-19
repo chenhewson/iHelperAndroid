@@ -3,6 +3,7 @@ package hewson.logindemo2.activity.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hewson.logindemo2.R;
-import hewson.logindemo2.activity.send_message_activity;
+import hewson.logindemo2.activity.chat.ChatActivity;
 import hewson.logindemo2.utils.Constants;
 
 public class message_fragment extends Fragment {
@@ -147,7 +148,7 @@ public class message_fragment extends Fragment {
         chatInfo.setType(conversationInfo.isGroup() ? TIMConversationType.Group : TIMConversationType.C2C);
         chatInfo.setId(conversationInfo.getId());
         chatInfo.setChatName(conversationInfo.getTitle());
-        Intent intent = new Intent(getActivity(), send_message_activity.class);//send_message_activity就是用于控制聊天界面的
+        Intent intent = new Intent(getActivity(), ChatActivity.class);//send_message_activity就是用于控制聊天界面的
         intent.putExtra(Constants.CHAT_INFO, chatInfo);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);

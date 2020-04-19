@@ -144,8 +144,8 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                         Log.i("tencentINFO", "onRefreshConversation, conversation size: " + conversations.size());
                     }
                 });
-        //禁用本地所有存储
-        userConfig.disableStorage();
+        //禁用本地所有存储,这个如果开着会导致聊天界面读取不到消息
+//        userConfig.disableStorage();
         //开启消息已读回执
         userConfig.enableReadReceipt(true);
         //将用户配置与通讯管理器进行绑定
