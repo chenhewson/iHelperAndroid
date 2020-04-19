@@ -1,22 +1,50 @@
 package hewson.logindemo2.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMConnListener;
+import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMGroupEventListener;
+import com.tencent.imsdk.TIMGroupTipsElem;
+import com.tencent.imsdk.TIMLogLevel;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMRefreshListener;
+import com.tencent.imsdk.TIMSdkConfig;
+import com.tencent.imsdk.TIMUserConfig;
+import com.tencent.imsdk.TIMUserStatusListener;
+import com.tencent.imsdk.session.SessionWrapper;
+import com.tencent.qcloud.tim.uikit.TUIKit;
+import com.tencent.qcloud.tim.uikit.utils.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.common.Const;
 import hewson.logindemo2.utils.ActivityCollectorUtil;
+import hewson.logindemo2.utils.GenerateTestUserSig;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.SharePreferencesUtil;
@@ -28,6 +56,7 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
     private EditText password_etittext;
     private BootstrapButton bootstrapButton;
     private BootstrapButton register_button;
+
 
 
     @Override
@@ -49,13 +78,85 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
         //注册点击事件
         bootstrapButton.setOnClickListener(this);
         register_button.setOnClickListener(this);
+
+        //初始化 IM SDK 基本配置
+        //判断是否是在主线程
+        if (SessionWrapper.isMainProcess(getApplicationContext())) {
+            TIMSdkConfig config = new TIMSdkConfig(Const.SDKAPPID)
+                    .enableLogPrint(true)
+                    .setLogLevel(TIMLogLevel.DEBUG)
+                    .setLogPath(Environment.getExternalStorageDirectory().getPath() + "/justfortest/");
+
+            //初始化 SDK
+            TIMManager.getInstance().init(getApplicationContext(), config);
+            Log.i("tencentINFO","初始化成功！");
+        }
+
+        //基本用户配置
+        TIMUserConfig userConfig = new TIMUserConfig()
+                //设置用户状态变更事件监听器
+                .setUserStatusListener(new TIMUserStatusListener() {
+                    @Override
+                    public void onForceOffline() {
+                        //被其他终端踢下线
+                        Log.i("tencentINFO", "onForceOffline");
+                    }
+
+                    @Override
+                    public void onUserSigExpired() {
+                        //用户签名过期了，需要刷新 userSig 重新登录 IM SDK
+                        Log.i("tencentINFO", "onUserSigExpired");
+                    }
+                })
+                //设置连接状态事件监听器
+                .setConnectionListener(new TIMConnListener() {
+                    @Override
+                    public void onConnected() {
+                        Log.i("tencentINFO", "onConnected");
+                    }
+
+                    @Override
+                    public void onDisconnected(int code, String desc) {
+                        Log.i("tencentINFO", "onDisconnected");
+                    }
+
+                    @Override
+                    public void onWifiNeedAuth(String name) {
+                        Log.i("tencentINFO", "onWifiNeedAuth");
+                    }
+                })
+                //设置群组事件监听器
+                .setGroupEventListener(new TIMGroupEventListener() {
+                    @Override
+                    public void onGroupTipsEvent(TIMGroupTipsElem elem) {
+                        Log.i("tencentINFO", "onGroupTipsEvent, type: " + elem.getTipsType());
+                    }
+                })
+                //设置会话刷新监听器
+                .setRefreshListener(new TIMRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i("tencentINFO", "onRefresh");
+                    }
+
+                    @Override
+                    public void onRefreshConversation(List<TIMConversation> conversations) {
+                        Log.i("tencentINFO", "onRefreshConversation, conversation size: " + conversations.size());
+                    }
+                });
+        //禁用本地所有存储
+        userConfig.disableStorage();
+        //开启消息已读回执
+        userConfig.enableReadReceipt(true);
+        //将用户配置与通讯管理器进行绑定
+        TIMManager.getInstance().setUserConfig(userConfig);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_button:
-                String username=username_etittext.getText().toString();
+                final String username=username_etittext.getText().toString();
                 String password=password_etittext.getText().toString();
 
                 //okhttp请求
@@ -82,8 +183,9 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                             util.putString("user",gson.toJson(serverResponse.getData()));
                             System.out.println(msg);
 
-                            //读文件中的boolean类型
-                            boolean isLogin=util.readBoolean("isLogin");
+                            //腾讯聊天生成私钥
+                            tencentLogin(username);
+
 
 //                            //Toast是子线程，所以要加Looper.prepare()和Looper.loop()，否则报错
                             Looper.prepare();
@@ -101,7 +203,10 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
                             Looper.loop();
                         }
                     }
-                });break;
+                });
+
+
+                break;
 
             case R.id.register_button:
                 //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
@@ -116,6 +221,25 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollectorUtil.removeActivity(login_activity.this);
+    }
+
+    public void tencentLogin(String username){
+        //腾讯聊天生成私钥
+        String userSig=GenerateTestUserSig.genTestUserSig(username);
+        // identifier 为用户名，userSig 为用户登录凭证
+        TIMManager.getInstance().login(username, userSig, new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                //错误码 code 列表请参见错误码表
+                Log.i("tencentINFO", "login failed. code: " + code + " errmsg: " + desc);
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.i("tencentINFO", "login succ");
+            }
+        });
     }
 
 }

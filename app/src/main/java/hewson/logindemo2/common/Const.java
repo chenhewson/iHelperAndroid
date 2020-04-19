@@ -11,4 +11,6 @@ public class Const {
     public static double LATITUDE = 24.623940;//纬度
 
     public static int SDKAPPID=1400353314;
+
+    public static String SECRETKEY="850dddbc143d91e4c085a990a9e19465f803029dc3e3745b25336637dceb1638";
 }

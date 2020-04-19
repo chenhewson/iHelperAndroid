@@ -2,6 +2,7 @@ package hewson.logindemo2.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMManager;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.activity.login_activity;
@@ -70,6 +73,22 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
                 SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(getActivity());
                 util.delete("user");
                 util.delete("isLogin");
+
+                //腾讯聊天登出
+                TIMManager.getInstance().logout(new TIMCallBack() {
+                    @Override
+                    public void onError(int code, String desc) {
+
+                        //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                        //错误码 code 列表请参见错误码表
+                        Log.i("tencentINFO", "logout failed. code: " + code + " errmsg: " + desc);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        Log.i("tencentINFO", "登出成功！");
+                    }
+                });
                 ActivityCollectorUtil.finishAllActivity();
                 //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
                 Intent intent=new Intent(getActivity(), login_activity.class);

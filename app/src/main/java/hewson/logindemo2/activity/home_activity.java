@@ -36,6 +36,8 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
     public static String message_FRAGMENT_TAG="message_FRAGMENT_TAG";
     public static String myinfo_FRAGMENT_TAG="myinfo_FRAGMENT_TAG";
 
+    private static home_activity instance;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -47,6 +49,7 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         ActivityCollectorUtil.addActivity(home_activity.this);
         setContentView(R.layout.activity_home);
+        instance=this;
 
         //隐藏顶部标题栏
         if (getSupportActionBar() != null){
@@ -190,5 +193,9 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
     /*暂停所有fragment*/
     public void pauseAllFragment(){
         
+    }
+
+    public static home_activity instance() {
+        return instance;
     }
 }

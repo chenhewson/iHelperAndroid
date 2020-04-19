@@ -50,38 +50,16 @@ public class home_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home,container,false);
         listView_home=view.findViewById(R.id.listview_home);
-        myadapter_home=new Myadapter_home(getActivity());
+        myadapter_home=new Myadapter_home(getContext());
         getOrderList();
-        listView_home.setOnItemClickListener(
-                new AdapterView.OnItemClickListener(){
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Bundle bundle = new Bundle();
-                        Map<String,Object> map= (Map<String, Object>) myadapter_home.getItem(position);
-
-                        //把参数放到bundle，实现activity传参
-                        bundle.putInt("item_userAvator",R.mipmap.icon_add_selected);
-                        bundle.putString("item_userName",(String)map.get("item_userName"));
-                        bundle.putString("item_orderTitle",(String)map.get("item_orderTitle"));
-                        bundle.putString("distance",(String)map.get("distance"));
-                        bundle.putString("address",(String) map.get("address"));
-                        bundle.putString("money",String.valueOf(map.get("money")));
-                        bundle.putString("taskid",String.valueOf(map.get("taskid")));
-
-                        Intent intent=new Intent(getContext(),OrderDetail.class);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-        );
-        Log.e("myadapter_home","myadapter_home执行");
+        Log.i("home_fragment","onCreateView");
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("onResume()");
+        Log.i("home_fragment","onResume");
     }
 
     @Override
@@ -137,7 +115,7 @@ public class home_fragment extends Fragment {
 
                                 //自己发布的任务不展示在首页
                                 if(!taskVo.getPublishuserid().equals(userid)){
-                                    map.put("item_userAvator",R.mipmap.icon_add_selected);
+                                    map.put("item_userAvator",R.mipmap.icon_avatar);
                                     map.put("item_userName",taskVo.gettDetail());//这里是任务详情
                                     map.put("item_orderTitle",taskVo.gettTitle());
                                     map.put("distance",showDistance(keyStr));
@@ -151,20 +129,6 @@ public class home_fragment extends Fragment {
                             }
                             listmap.addAll(listmapTemp);
                         }
-
-
-/*                        if(list!=null){
-                            listmap.clear();
-                            for(TaskVo taskVo:list){
-                                Map<String,Object> map=new HashMap<String,Object>();
-
-                                map.put("item_userAvator",R.mipmap.icon_add_selected);
-                                map.put("item_userName",taskVo.gettDetail());
-                                map.put("item_orderTitle",taskVo.gettTitle());
-                                listmapTemp.add(map);
-                            }
-                            listmap.addAll(listmapTemp);
-                        }*/
                     }
                 }
         );
@@ -172,6 +136,29 @@ public class home_fragment extends Fragment {
         myadapter_home.setList(listmap);//给数据
         myadapter_home.notifyDataSetChanged();
         listView_home.setAdapter(myadapter_home);
+
+        listView_home.setOnItemClickListener(
+                new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Bundle bundle = new Bundle();
+                        Map<String,Object> map= (Map<String, Object>) myadapter_home.getItem(position);
+
+                        //把参数放到bundle，实现activity传参
+                        bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
+                        bundle.putString("item_userName",(String)map.get("item_userName"));
+                        bundle.putString("item_orderTitle",(String)map.get("item_orderTitle"));
+                        bundle.putString("distance",(String)map.get("distance"));
+                        bundle.putString("address",(String) map.get("address"));
+                        bundle.putString("money",String.valueOf(map.get("money")));
+                        bundle.putString("taskid",String.valueOf(map.get("taskid")));
+
+                        Intent intent=new Intent(getContext(),OrderDetail.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
     public String showDistance(Double doublemoney){

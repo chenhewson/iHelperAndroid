@@ -82,6 +82,11 @@
 <!--        任务详情界面-->
         <activity android:name=".activity.OrderDetail"></activity>
 
+        <!--        发送消息-->
+        <activity android:name=".activity.send_message_activity"></activity>
+
+
+
 <!--        相机-->
         <provider
             android:authorities="com.fileprovider"
