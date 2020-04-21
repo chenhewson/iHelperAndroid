@@ -135,6 +135,19 @@
                             android:text="距离"/>
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_toRightOf="@+id/linearlayout_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/imageview_heart"
+                        android:layout_width="28dp"
+                        android:layout_height="35dp"
+                        android:src="@mipmap/icon_heart"/>
+                </LinearLayout>
             </RelativeLayout>
 
             <com.beardedhen.androidbootstrap.BootstrapButton

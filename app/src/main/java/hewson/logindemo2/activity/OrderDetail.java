@@ -3,10 +3,12 @@ package hewson.logindemo2.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +39,9 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
     TextView item_distinct;
     TextView item_distance;
     BootstrapButton button_start_message;
+    ImageView imageview_heart;
+    String taskid;
+    UserVo userVo=null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +57,11 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
         item_money=(TextView)findViewById(R.id.detail_money);
         item_distinct=(TextView)findViewById(R.id.detail_distinct);
         item_distance=(TextView)findViewById(R.id.detail_distance);
+        imageview_heart=(ImageView)findViewById(R.id.imageview_heart);
 
         button_start_message=(BootstrapButton)findViewById(R.id.button_start_message);
         button_start_message.setOnClickListener(this);
+        imageview_heart.setOnClickListener(this);
 
         Bundle bundle=getIntent().getExtras();
 
@@ -64,7 +71,7 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
         //解析json，转为user实体类
         Gson gson=new Gson();
-        final UserVo userVo=gson.fromJson(userinfo, UserVo.class);
+        userVo=gson.fromJson(userinfo, UserVo.class);
 
         //从bundle获取参数
         item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
@@ -74,9 +81,10 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
         item_distinct.setText((String)bundle.getString("address"));
         item_distance.setText((String)bundle.getString("distance"));
 
-        String taskid=bundle.getString("taskid");
+        taskid=bundle.getString("taskid");
         Integer finisherid=userVo.getUserid();
 
+        //获取该任务发布者的用户名，作为腾讯聊天的聊天对象
         OkhttpUtils.get(Const.IpAddress+"protal/Task/getUsername.do?taskId="+taskid,
                 new OkHttpCallback(){
                     @Override
@@ -94,13 +102,35 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                         }
                     }
                 });
+
+        OkhttpUtils.get(Const.IpAddress+"protal/Task/StarExist.do?tUserid="+String.valueOf(userVo.getUserid())+"&tTaskid="+String.valueOf(taskid),
+                new OkHttpCallback(){
+                    @Override
+                    public void OnFinish(String status, String msg) {
+                        super.OnFinish(status, msg);
+                        //解析数据,将json格式的msg转为ServerResponse对象
+                        Gson gson = new Gson();
+
+                        //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
+                        ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
+
+                        //心愿清单不存在该项
+                        if(serverResponse.getStatus()==0){
+                            imageview_heart.setImageResource(R.mipmap.icon_heart);
+                        }
+
+                        //心愿清单已经存在该项
+                        if(serverResponse.getStatus()==1){
+                            imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                        }
+                    }
+                });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_start_message:
-
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setType(TIMConversationType.C2C);//c2c为单聊模式
                 chatInfo.setId(taskUsername);//单聊唯一标识,单聊模式为用户名
@@ -109,6 +139,39 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                 intent.putExtra(Constants.CHAT_INFO, chatInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 OrderDetail.this.startActivity(intent);
+                break;
+
+            case R.id.imageview_heart:
+                //判断该任务是否在愿望清单
+                Integer userid = userVo.getUserid();//tUserid
+                OkhttpUtils.get(Const.IpAddress+"protal/Task/starExistTask.do?tUserid="+String.valueOf(userid)+"&tTaskid="+String.valueOf(taskid),
+                        new OkHttpCallback(){
+                            @Override
+                            public void OnFinish(String status, String msg) {
+                                super.OnFinish(status, msg);
+                                //解析数据,将json格式的msg转为ServerResponse对象
+                                Gson gson = new Gson();
+
+                                //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
+                                ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
+
+                                //心愿清单不存在该项，现已加入该项目
+                                if(serverResponse.getStatus()==0){
+                                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                                    Looper.prepare();
+                                    Toast.makeText(OrderDetail.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
+                                    Looper.loop();
+                                }
+
+                                //心愿清单已经存在该项，现已移除该项目
+                                if(serverResponse.getStatus()==1){
+                                    imageview_heart.setImageResource(R.mipmap.icon_heart);
+                                    Looper.prepare();
+                                    Toast.makeText(OrderDetail.this,"已移除！", Toast.LENGTH_LONG).show();
+                                    Looper.loop();
+                                }
+                            }
+                        });
                 break;
         }
     }

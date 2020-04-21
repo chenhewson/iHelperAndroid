@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,15 +43,21 @@ import hewson.logindemo2.vo.ServerResponse;
 import hewson.logindemo2.vo.TaskVo;
 import hewson.logindemo2.vo.UserVo;
 
-public class home_fragment extends Fragment {
+public class home_fragment extends Fragment implements View.OnClickListener{
     private List<Map<String,Object>> listmap=new ArrayList<Map<String,Object>>();
     Myadapter_home myadapter_home;
     ListView listView_home;
+    ImageView imageview_heart;
+    LinearLayout linearlayout_heart;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home,container,false);
         listView_home=view.findViewById(R.id.listview_home);
+//        linearlayout_heart=view.findViewById(R.id.linearlayout_heart);
+//        imageview_heart=(ImageView)view.findViewById(R.id.imageview_heart);
+
+//        linearlayout_heart.setOnClickListener(this);
         getOrderList();
         Log.i("home_fragment","onCreateView");
         return view;
@@ -179,6 +187,15 @@ public class home_fragment extends Fragment {
             return ">10公里";
         }else {
             return "暂无";
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+//            case R.id.linearlayout_heart:
+//                imageview_heart.setImageResource(R.mipmap.imageview_heart_selected);
+//                break;
         }
     }
 }

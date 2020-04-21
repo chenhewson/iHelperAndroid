@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants">
-<!--    descendantFocusability用来夺回焦点-->
+<!--    android:descendantFocusability="blocksDescendants用来夺回焦点-->
     <ImageView
         android:id="@+id/item_userAvator"
         android:layout_width="200px"
@@ -93,19 +93,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearlayout_heart"
+        android:id="@+id/linearlayout_heart_outter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
         android:layout_toRightOf="@id/linearlayout_info"
         android:orientation="vertical">
-        <ImageView
-            android:id="@+id/imageview_heart"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/icon_heart"/>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_heart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/imageview_heart"
+                android:layout_width="28dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_heart" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
