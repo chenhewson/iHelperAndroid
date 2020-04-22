@@ -40,6 +40,7 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
     TextView item_distance;
     BootstrapButton button_start_message;
     ImageView imageview_heart;
+    BootstrapButton button_detail_receiveorder;
     String taskid;
     UserVo userVo=null;
     @Override
@@ -58,10 +59,12 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
         item_distinct=(TextView)findViewById(R.id.detail_distinct);
         item_distance=(TextView)findViewById(R.id.detail_distance);
         imageview_heart=(ImageView)findViewById(R.id.imageview_heart);
+        button_detail_receiveorder=(BootstrapButton)findViewById(R.id.button_detail_receiveorder);
 
         button_start_message=(BootstrapButton)findViewById(R.id.button_start_message);
         button_start_message.setOnClickListener(this);
         imageview_heart.setOnClickListener(this);
+        button_detail_receiveorder.setOnClickListener(this);
 
         Bundle bundle=getIntent().getExtras();
 
@@ -172,6 +175,28 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                                 }
                             }
                         });
+                break;
+
+            case R.id.button_detail_receiveorder:
+                Log.i("OrderDetail","接受任务执行");
+                OkhttpUtils.get(Const.IpAddress+"protal/Task/receiveTask.do?finisherid="+String.valueOf(userVo.getUserid())+"&taskid="+String.valueOf(taskid),
+                        new OkHttpCallback(){
+                            @Override
+                            public void OnFinish(String status, String msg) {
+                                super.OnFinish(status, msg);
+                                //解析数据,将json格式的msg转为ServerResponse对象
+                                Gson gson = new Gson();
+
+                                //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
+                                ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
+                                Looper.prepare();
+                                Toast.makeText(OrderDetail.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
+                                Looper.loop();
+                            }
+                        });
+                //跳转到任务接受成功界面
+                OrderDetail.this.startActivity(new Intent(OrderDetail.this,ReceiveDone_activity.class));
+                OrderDetail.this.finish();
                 break;
         }
     }

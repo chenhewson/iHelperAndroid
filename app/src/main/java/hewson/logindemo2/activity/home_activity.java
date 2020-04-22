@@ -152,6 +152,11 @@ public class home_activity extends AppCompatActivity implements View.OnClickList
         fragmentTransaction.commit();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void resetAllico(String selected){
         ImageView home_icon;
         ImageView star_icon;

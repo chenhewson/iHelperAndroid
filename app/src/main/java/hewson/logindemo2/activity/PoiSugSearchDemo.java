@@ -30,18 +30,13 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import hewson.logindemo2.R;
-import hewson.logindemo2.activity.fragment.addorder_fragment;
 import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.SharePreferencesUtil;
 
@@ -166,15 +161,14 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
                         String str1=str0.replaceAll("\\{","");
                         String str2=str1.replaceAll("\\}","");
                         String[] strings=str2.split(",");
-                        String city=strings[0].replaceAll("city=","");
+                        String dis=strings[0].replaceAll("dis=","");
                         String key=strings[1].replaceAll("key=","");
-                        String dis=strings[2].replaceAll("dis=","");
+                        String city=strings[2].replaceAll("city=","");
 
                         //完整地址
                         String address=city+dis+key;
-                        System.out.println(address);
                         setKey(address);
-                        mKeyWordsView.setText(getKey());
+                        mKeyWordsView.setText(address);
                     }
                 }
         );

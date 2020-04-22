@@ -54,4 +54,17 @@ dependencies {
 
     compile 'com.tencent.imsdk:tuikit:4.7.2'
 
+    compile (name: 'alipaySdk-15.7.4-20200228192259', ext: 'aar')
+
+}
+allprojects {
+    repositories {
+
+        // 添加下面的内容
+        flatDir {
+            dirs 'libs'
+        }
+
+        // ... jcenter() 等其他仓库
+    }
 }

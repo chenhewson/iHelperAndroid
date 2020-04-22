@@ -1,24 +1,49 @@
 package hewson.logindemo2.activity.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.alipay.sdk.app.EnvUtils;
+import com.alipay.sdk.app.PayTask;
 import com.baidu.location.LocationClient;
+import com.beardedhen.androidbootstrap.BootstrapButton;
+
+import java.util.Map;
 
 import hewson.logindemo2.R;
+import hewson.logindemo2.activity.OrderDetail;
 import hewson.logindemo2.activity.PoiSugSearchDemo;
+import hewson.logindemo2.activity.ReceiveDone_activity;
+import hewson.logindemo2.activity.addOrderDone_activity;
+import hewson.logindemo2.activity.alipay.AuthResult;
+import hewson.logindemo2.activity.alipay.PayDemoActivity;
+import hewson.logindemo2.activity.alipay.PayResult;
+import hewson.logindemo2.activity.login_activity;
+import hewson.logindemo2.activity.pay_activity;
+import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.OrderInfoUtil2_0;
 import hewson.logindemo2.utils.SharePreferencesUtil;
+import hewson.logindemo2.utils.getUserInfo;
+
+import static hewson.logindemo2.common.Const.RSA2_PRIVATE;
 
 public class addorder_fragment extends Fragment implements View.OnClickListener{
 
@@ -27,15 +52,20 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
     EditText edittext_orderdetail;
     EditText edittext_money;
     DatePicker datepicker_deadline;
+    BootstrapButton button_addorder;
 
     private String addressValue;
 
 
+    private static final int SDK_PAY_FLAG = 1;
+    private static final int SDK_AUTH_FLAG = 2;
+
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_addorder,container,false);
+        view=inflater.inflate(R.layout.fragment_addorder,container,false);
 
         //获取组件
         distinction=(TextView)view.findViewById(R.id.textview_selectPosition);
@@ -43,10 +73,12 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
         edittext_orderdetail=(EditText)view.findViewById(R.id.edittext_orderdetail);
         edittext_money=(EditText)view.findViewById(R.id.edittext_money);
         datepicker_deadline=(DatePicker)view.findViewById(R.id.datepicker_deadline);
-
+        button_addorder=(BootstrapButton)view.findViewById(R.id.button_addorder);
         distinction.setOnClickListener(this);
 
-
+        button_addorder.setOnClickListener(this);
+        //配置沙箱环境
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         return view;
     }
 
@@ -79,10 +111,27 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.textview_selectPosition:
-                Intent intent=new Intent(getActivity(), PoiSugSearchDemo.class);
-//                Intent intent=new Intent(getActivity(), GeoCoderDemo.class);
-                startActivity(intent);
+                startActivity(new Intent(getActivity(), PoiSugSearchDemo.class));
                 this.onPause();
+                break;
+            case R.id.button_addorder:
+                if(edittext_money.getText().toString()!=null&&edittext_money.getText().toString().length()!=0) {
+                    Intent intent=new Intent(getActivity(), pay_activity.class);
+
+                    intent.putExtra("distinction",distinction.getText().toString());
+                    intent.putExtra("ordertitle",edittext_ordertitle.getText().toString());
+                    intent.putExtra("orderdetail",edittext_orderdetail.getText().toString());
+                    intent.putExtra("money",edittext_money.getText().toString());
+                    intent.putExtra("publishuserid", getUserInfo.getuser(getContext()).getUserid());
+
+                    startActivity(intent);
+                    getActivity().finish();
+                }else {
+                    //赏金为空
+                }
+//                Intent intent=new Intent(getActivity(), GeoCoderDemo.class);
+//                startActivity(new Intent(getActivity(), ReceiveDone_activity.class));
+//                getActivity().finish();
                 break;
         }
 
@@ -133,5 +182,12 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
             distinction.setText(key);
             util.delete("address");
         }
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 }

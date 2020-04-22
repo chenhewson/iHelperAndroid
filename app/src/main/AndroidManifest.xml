@@ -43,7 +43,7 @@
 <!--        百度地图填写刚申请的API_KEY-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="qYZ68N7etAWQVeanYI8X4HspY6NCDQwC"/>
+            android:value="PU936RqKHV89aOhTjN0Lry9yGGnzqTFx"/>
 
         <!--定义百度地图的服务，用于定位.间隔定位必须开启此服务-->
         <service android:name="com.baidu.location.f"
@@ -57,9 +57,16 @@
         <activity android:name=".activity.login_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+<!--支付宝-->
+        <activity android:name=".activity.alipay.PayDemoActivity">
+<!--                <intent-filter>-->
+<!--                    <action android:name="android.intent.action.MAIN" />-->
+<!--                    <category android:name="android.intent.category.LAUNCHER" />-->
+<!--                </intent-filter>-->
         </activity>
 
         <!-- 首页界面 -->
@@ -84,6 +91,17 @@
 
         <!--        腾讯聊天-->
         <activity android:name=".activity.chat.ChatActivity"></activity>
+
+        <!--        任务接受成功-->
+        <activity android:name=".activity.ReceiveDone_activity"></activity>
+
+<!--        支付宝-->
+        <activity android:name=".activity.alipay.H5PayDemoActivity"></activity>
+
+        <!--        确认支付-->
+        <activity android:name=".activity.pay_activity"></activity>
+
+
 
 
 

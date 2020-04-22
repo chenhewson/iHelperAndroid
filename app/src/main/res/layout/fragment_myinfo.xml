@@ -89,23 +89,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:paddingTop="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="10dp"
-            android:drawableRight="@mipmap/icon_right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="查看全部任务"/>
+<!--        <TextView-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingLeft="20dp"-->
+<!--            android:paddingRight="20dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:drawableRight="@mipmap/icon_right"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="25sp"-->
+<!--            android:text="查看全部任务"/>-->
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/menu_order"
         android:layout_below="@+id/menu_orderall"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/shape_corner_down"
+        android:background="@drawable/shape_corner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     <LinearLayout

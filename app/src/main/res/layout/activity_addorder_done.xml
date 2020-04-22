@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:id="@+id/topbar_orderdetail"
+        android:background="@color/colorTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="任务接受"
+            android:textStyle="bold"
+
+            android:layout_gravity="center"
+            android:textSize="25dp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollview"
+        android:scrollbars="vertical"
+        android:layout_below="@id/topbar_orderdetail"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativelaout_1"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_corner"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+                <!--    descendantFocusability用来夺回焦点-->
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_info"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:id="@+id/detail_userAvator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@mipmap/icon_done" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="任务添加完成！"
+                        android:textStyle="bold"
+                        android:textSize="20dp"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:id="@+id/button_seemore"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="再去逛逛"
+                android:textStyle="bold"
+                app:bootstrapBrand="warning"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:showOutline="false"
+                app:roundedCorners="true"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
+
+
+
+

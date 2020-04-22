@@ -52,6 +52,11 @@ public class MyLocationListener implements BDLocationListener {
             sb.append("\ndescribe : ");
             sb.append("gps定位成功");
 
+            //现在已经定位成功，可以将定位的数据保存下来，Const就是保存数据的类
+            Const.LONGITUDE = location.getLongitude();
+            Const.LATITUDE = location.getLatitude();
+
+
         } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
 
             // 网络定位结果
@@ -64,11 +69,19 @@ public class MyLocationListener implements BDLocationListener {
             sb.append("\ndescribe : ");
             sb.append("网络定位成功");
 
+            //现在已经定位成功，可以将定位的数据保存下来，Const就是保存数据的类
+            Const.LONGITUDE = location.getLongitude();
+            Const.LATITUDE = location.getLatitude();
+
         } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
 
             // 离线定位结果
             sb.append("\ndescribe : ");
             sb.append("离线定位成功，离线定位结果也是有效的");
+
+            //现在已经定位成功，可以将定位的数据保存下来，Const就是保存数据的类
+            Const.LONGITUDE = location.getLongitude();
+            Const.LATITUDE = location.getLatitude();
 
         } else if (location.getLocType() == BDLocation.TypeServerError) {
 
@@ -102,8 +115,5 @@ public class MyLocationListener implements BDLocationListener {
 
         Log.i("BaiduLocationApiDem", sb.toString());
 
-        //现在已经定位成功，可以将定位的数据保存下来，Const就是保存数据的类
-        Const.LONGITUDE = location.getLongitude();
-        Const.LATITUDE = location.getLatitude();
     }
 }

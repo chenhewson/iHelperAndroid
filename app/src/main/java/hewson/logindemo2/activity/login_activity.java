@@ -64,8 +64,11 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         ActivityCollectorUtil.addActivity(login_activity.this);
+        setContentView(R.layout.login);
+        ActivityCollectorUtil.addActivity(login_activity.this);
         //隐藏顶部标题栏
         if (getSupportActionBar() != null){
+            getSupportActionBar().hide();
             getSupportActionBar().hide();
         }
 
