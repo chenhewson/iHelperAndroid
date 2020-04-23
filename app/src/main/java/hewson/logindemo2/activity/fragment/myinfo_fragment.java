@@ -19,6 +19,7 @@ import com.tencent.imsdk.TIMManager;
 
 import hewson.logindemo2.R;
 import hewson.logindemo2.activity.login_activity;
+import hewson.logindemo2.activity.myinfo_orderclassfier_activity;
 import hewson.logindemo2.activity.register_activity;
 import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.SharePreferencesUtil;
@@ -29,6 +30,11 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
     TextView textview_username;
     ImageView imageview_avator;
     BootstrapButton exit_login;
+
+    ImageView imageview_no_done;
+    ImageView imageview_published;
+    ImageView imageview_done;
+    ImageView imageview_money;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -38,7 +44,16 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
         imageview_avator=view.findViewById(R.id.imageview_avator);
         exit_login=view.findViewById(R.id.button_exit);
 
+        imageview_no_done=view.findViewById(R.id.imageview_no_done);
+        imageview_published=view.findViewById(R.id.imageview_published);
+        imageview_done=view.findViewById(R.id.imageview_done);
+        imageview_money=view.findViewById(R.id.imageview_money);
+
         exit_login.setOnClickListener(this);
+        imageview_no_done.setOnClickListener(this);
+        imageview_published.setOnClickListener(this);
+        imageview_done.setOnClickListener(this);
+        imageview_money.setOnClickListener(this);
         return view;
     }
 
@@ -94,6 +109,26 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
                 Intent intent=new Intent(getActivity(), login_activity.class);
                 getActivity().startActivity(intent);
                 break;
+
+            //0：啥都没有。1：未完成。2：已发布。3：已完成
+            case R.id.imageview_no_done:
+                getActivity().startActivity(initIntent(1));
+                getActivity().finish();
+                break;
+            case R.id.imageview_published:
+                getActivity().startActivity(initIntent(2));
+                break;
+            case R.id.imageview_done:
+                getActivity().startActivity(initIntent(3));
+                break;
+            case R.id.imageview_money:
+                break;
         }
+    }
+
+    public Intent initIntent(int flag){
+        Intent intent=new Intent(getActivity(), myinfo_orderclassfier_activity.class);
+        intent.putExtra("flag",flag);
+        return intent;
     }
 }

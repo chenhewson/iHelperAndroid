@@ -1,6 +1,5 @@
 package hewson.logindemo2.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
@@ -26,11 +25,11 @@ import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.Constants;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
-import hewson.logindemo2.utils.SharePreferencesUtil;
+import hewson.logindemo2.utils.myUserInfo;
 import hewson.logindemo2.vo.ServerResponse;
 import hewson.logindemo2.vo.UserVo;
 
-public class OrderDetail extends AppCompatActivity implements View.OnClickListener{
+public class OrderDone extends AppCompatActivity implements View.OnClickListener{
     private String taskUsername;
     //获取item布局中的组件的id
     ImageView item_userAvator;
@@ -41,14 +40,14 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
     TextView item_distance;
     BootstrapButton button_start_message;
     ImageView imageview_heart;
-    BootstrapButton button_detail_receiveorder;
+    BootstrapButton button_order_done;
     String taskid;
     UserVo userVo=null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_detail);
-        ActivityCollectorUtil.addActivity(OrderDetail.this);
+        setContentView(R.layout.activity_order_done);
+        ActivityCollectorUtil.addActivity(OrderDone.this);
 //隐藏顶部标题栏
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
@@ -61,22 +60,17 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
         item_distinct=(TextView)findViewById(R.id.detail_distinct);
         item_distance=(TextView)findViewById(R.id.detail_distance);
         imageview_heart=(ImageView)findViewById(R.id.imageview_heart);
-        button_detail_receiveorder=(BootstrapButton)findViewById(R.id.button_detail_receiveorder);
+        button_order_done=(BootstrapButton)findViewById(R.id.button_order_done);
 
         button_start_message=(BootstrapButton)findViewById(R.id.button_start_message);
         button_start_message.setOnClickListener(this);
         imageview_heart.setOnClickListener(this);
-        button_detail_receiveorder.setOnClickListener(this);
+        button_order_done.setOnClickListener(this);
 
         Bundle bundle=getIntent().getExtras();
 
-        //获取保存在SharePreferences中当前登录的user
-        final SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(OrderDetail.this);
-        String userinfo=util.readString("user");
-
         //解析json，转为user实体类
-        Gson gson=new Gson();
-        userVo=gson.fromJson(userinfo, UserVo.class);
+        userVo= myUserInfo.getuser(OrderDone.this);
 
         //从bundle获取参数
         item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
@@ -140,10 +134,10 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                 chatInfo.setType(TIMConversationType.C2C);//c2c为单聊模式
                 chatInfo.setId(taskUsername);//单聊唯一标识,单聊模式为用户名
                 chatInfo.setChatName(taskUsername);//用户名
-                Intent intent = new Intent(OrderDetail.this, ChatActivity.class);//ChatActivity就是用于控制聊天界面的
+                Intent intent = new Intent(OrderDone.this, ChatActivity.class);//ChatActivity就是用于控制聊天界面的
                 intent.putExtra(Constants.CHAT_INFO, chatInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                OrderDetail.this.startActivity(intent);
+                OrderDone.this.startActivity(intent);
                 break;
 
             case R.id.imageview_heart:
@@ -164,7 +158,7 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                                 if(serverResponse.getStatus()==0){
                                     imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
                                     Looper.prepare();
-                                    Toast.makeText(OrderDetail.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(OrderDone.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
                                     Looper.loop();
                                 }
 
@@ -172,16 +166,16 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                                 if(serverResponse.getStatus()==1){
                                     imageview_heart.setImageResource(R.mipmap.icon_heart);
                                     Looper.prepare();
-                                    Toast.makeText(OrderDetail.this,"已移除！", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(OrderDone.this,"已移除！", Toast.LENGTH_LONG).show();
                                     Looper.loop();
                                 }
                             }
                         });
                 break;
 
-            case R.id.button_detail_receiveorder:
-                Log.i("OrderDetail","接受任务执行");
-                OkhttpUtils.get(Const.IpAddress+"protal/Task/receiveTask.do?finisherid="+String.valueOf(userVo.getUserid())+"&taskid="+String.valueOf(taskid),
+            case R.id.button_order_done:
+                Log.i("OrderDetail","完成任务执行");
+                OkhttpUtils.get(Const.IpAddress+"protal/Task/isDone.do?taskid="+taskid,
                         new OkHttpCallback(){
                             @Override
                             public void OnFinish(String status, String msg) {
@@ -192,13 +186,13 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
                                 //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
                                 ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
                                 Looper.prepare();
-                                Toast.makeText(OrderDetail.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(OrderDone.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
                                 Looper.loop();
                             }
                         });
                 //跳转到任务接受成功界面
-                OrderDetail.this.startActivity(new Intent(OrderDetail.this,ReceiveDone_activity.class));
-                OrderDetail.this.finish();
+                OrderDone.this.startActivity(new Intent(OrderDone.this,ReceiveDone_activity.class));
+                OrderDone.this.finish();
                 break;
         }
     }
@@ -206,6 +200,6 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ActivityCollectorUtil.removeActivity(OrderDetail.this);
+        ActivityCollectorUtil.removeActivity(OrderDone.this);
     }
 }

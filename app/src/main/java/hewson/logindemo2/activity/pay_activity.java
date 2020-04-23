@@ -12,7 +12,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +26,13 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Map;
 
 import hewson.logindemo2.R;
-import hewson.logindemo2.activity.alipay.PayDemoActivity;
 import hewson.logindemo2.activity.alipay.PayResult;
 import hewson.logindemo2.common.Const;
 import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.OrderInfoUtil2_0;
+import hewson.logindemo2.utils.myUserInfo;
 import hewson.logindemo2.vo.ServerResponse;
 
 import static hewson.logindemo2.common.Const.RSA2_PRIVATE;
@@ -70,7 +69,7 @@ public class pay_activity extends AppCompatActivity implements View.OnClickListe
         textview_ordertitle.setText(intent.getStringExtra("ordertitle"));
         textview_orderdetail.setText(intent.getStringExtra("orderdetail"));
         textview_money.setText(intent.getStringExtra("money"));
-        publishuserid=intent.getStringExtra("publishuserid");
+        publishuserid= String.valueOf(myUserInfo.getuser(this).getUserid());
 
         button_pay.setOnClickListener(this);
         button_seemore.setOnClickListener(this);

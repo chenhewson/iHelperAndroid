@@ -161,9 +161,9 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
                         String str1=str0.replaceAll("\\{","");
                         String str2=str1.replaceAll("\\}","");
                         String[] strings=str2.split(",");
-                        String dis=strings[0].replaceAll("dis=","");
+                        String city=strings[0].replaceAll("city=","");
                         String key=strings[1].replaceAll("key=","");
-                        String city=strings[2].replaceAll("city=","");
+                        String dis=strings[2].replaceAll("dis=","");
 
                         //完整地址
                         String address=city+dis+key;

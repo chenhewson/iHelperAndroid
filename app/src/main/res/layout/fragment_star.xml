@@ -21,10 +21,12 @@
             android:textSize="25dp"/>
 
     </LinearLayout>
-    <TextView
+    <ListView
+        android:id="@+id/listview_star"
         android:layout_below="@id/topbar_addorder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="感兴趣" />
+        android:layout_height="wrap_content">
+    </ListView>
+
 
 </RelativeLayout>

@@ -69,7 +69,6 @@ public class login_activity extends AppCompatActivity implements View.OnClickLis
         //隐藏顶部标题栏
         if (getSupportActionBar() != null){
             getSupportActionBar().hide();
-            getSupportActionBar().hide();
         }
 
         //获取用户名

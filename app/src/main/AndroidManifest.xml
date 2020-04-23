@@ -89,6 +89,12 @@
 <!--        任务详情界面-->
         <activity android:name=".activity.OrderDetail"></activity>
 
+<!--        标记任务完成-->
+        <activity android:name=".activity.OrderDone"></activity>
+
+        <!--        发布方确认完成，并汇款给对方-->
+        <activity android:name=".activity.OrderSendMoney"></activity>
+
         <!--        腾讯聊天-->
         <activity android:name=".activity.chat.ChatActivity"></activity>
 
@@ -100,6 +106,9 @@
 
         <!--        确认支付-->
         <activity android:name=".activity.pay_activity"></activity>
+
+<!--        个人主页任务分类-->
+        <activity android:name=".activity.myinfo_orderclassfier_activity"></activity>
 
 
 

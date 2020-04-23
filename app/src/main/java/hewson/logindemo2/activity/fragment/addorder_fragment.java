@@ -1,49 +1,27 @@
 package hewson.logindemo2.activity.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.alipay.sdk.app.EnvUtils;
-import com.alipay.sdk.app.PayTask;
-import com.baidu.location.LocationClient;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
-import java.util.Map;
-
 import hewson.logindemo2.R;
-import hewson.logindemo2.activity.OrderDetail;
 import hewson.logindemo2.activity.PoiSugSearchDemo;
-import hewson.logindemo2.activity.ReceiveDone_activity;
-import hewson.logindemo2.activity.addOrderDone_activity;
-import hewson.logindemo2.activity.alipay.AuthResult;
-import hewson.logindemo2.activity.alipay.PayDemoActivity;
-import hewson.logindemo2.activity.alipay.PayResult;
-import hewson.logindemo2.activity.login_activity;
 import hewson.logindemo2.activity.pay_activity;
-import hewson.logindemo2.common.Const;
-import hewson.logindemo2.utils.OrderInfoUtil2_0;
 import hewson.logindemo2.utils.SharePreferencesUtil;
-import hewson.logindemo2.utils.getUserInfo;
-
-import static hewson.logindemo2.common.Const.RSA2_PRIVATE;
+import hewson.logindemo2.utils.myUserInfo;
 
 public class addorder_fragment extends Fragment implements View.OnClickListener{
 
@@ -122,9 +100,10 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
                     intent.putExtra("ordertitle",edittext_ordertitle.getText().toString());
                     intent.putExtra("orderdetail",edittext_orderdetail.getText().toString());
                     intent.putExtra("money",edittext_money.getText().toString());
-                    intent.putExtra("publishuserid", getUserInfo.getuser(getContext()).getUserid());
+                    intent.putExtra("publishuserid", myUserInfo.getuser(getContext()).getUserid());
 
                     startActivity(intent);
+                    deleteInfo();
                     getActivity().finish();
                 }else {
                     //赏金为空
@@ -156,6 +135,13 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
         util.putString("edittext_orderdetail",edittext_orderdetail.getText().toString());
         util.putString("edittext_money",edittext_money.getText().toString());
         util.putBoolean("OrderInfo_Exist",true);
+    }
+
+    public void deleteInfo(){
+        SharePreferencesUtil util= SharePreferencesUtil.getSharePreferencesInstance(getActivity());
+        util.delete("edittext_ordertitle");
+        util.delete("edittext_orderdetail");
+        util.delete("edittext_money");
     }
 
     public void readInfo(){

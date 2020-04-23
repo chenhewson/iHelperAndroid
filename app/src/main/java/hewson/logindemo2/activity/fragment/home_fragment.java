@@ -2,7 +2,9 @@ package hewson.logindemo2.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,7 @@ import hewson.logindemo2.common.Const;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.SharePreferencesUtil;
+import hewson.logindemo2.utils.myUserInfo;
 import hewson.logindemo2.vo.ServerResponse;
 import hewson.logindemo2.vo.TaskVo;
 import hewson.logindemo2.vo.UserVo;
@@ -47,18 +50,37 @@ public class home_fragment extends Fragment implements View.OnClickListener{
     private List<Map<String,Object>> listmap=new ArrayList<Map<String,Object>>();
     Myadapter_home myadapter_home;
     ListView listView_home;
-    ImageView imageview_heart;
-    LinearLayout linearlayout_heart;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if ( listView_home.getAdapter()==null) {
+            if (myadapter_home==null) {
+                myadapter_home = new Myadapter_home(getActivity());
+                getOrderList();
+            }else{
+                getOrderList();
+            }
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_home,container,false);
+        Log.i("view","view==null");
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         listView_home=view.findViewById(R.id.listview_home);
+
+
 //        linearlayout_heart=view.findViewById(R.id.linearlayout_heart);
 //        imageview_heart=(ImageView)view.findViewById(R.id.imageview_heart);
 
 //        linearlayout_heart.setOnClickListener(this);
-        getOrderList();
         Log.i("home_fragment","onCreateView");
         return view;
     }
@@ -66,7 +88,7 @@ public class home_fragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("home_fragment","onResume");
+        Log.e("home_fragment","onResume");
     }
 
     @Override
@@ -80,7 +102,6 @@ public class home_fragment extends Fragment implements View.OnClickListener{
     }
 
     public void getOrderList(){
-        myadapter_home=new Myadapter_home(getContext());
         //1.拿到listview对象
 
         //获取保存在SharePreferences中当前登录的user
@@ -114,14 +135,14 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                         Set<Double> keys = treeMap.keySet();
                         List<TaskVo> list =new LinkedList<TaskVo>();
                         if(treeMap.size()!=0){
-//                            listmap.clear();
+                            listmap.clear();
                             for(Iterator iter = keys.iterator(); iter.hasNext();){
                                 Map<String,Object> map=new HashMap<String,Object>();
                                 Double keyStr = (Double) iter.next();//获取距离
                                 TaskVo taskVo = treeMap.get(keyStr);//获取实体类
 
                                 //自己发布的任务不展示在首页
-                                if(!taskVo.getPublishuserid().equals(userid)){
+                                if(!taskVo.getPublishuserid().equals(String.valueOf(myUserInfo.getuser(getActivity()).getUserid()))){
                                     map.put("item_userAvator",R.mipmap.icon_avatar);
                                     map.put("item_userName",taskVo.gettDetail());//这里是任务详情
                                     map.put("item_orderTitle",taskVo.gettTitle());
@@ -135,14 +156,15 @@ public class home_fragment extends Fragment implements View.OnClickListener{
 
                             }
                             listmap.addAll(listmapTemp);
+
+                            Message msge = new Message();
+                            msge.what = 1;//setadapter
+                            msge.obj = listmap;
+                            mHandler.sendMessage(msge);
                         }
                     }
                 }
         );
-        //3.设置适配器,用自定义adapter
-        myadapter_home.setList(listmap);//给数据
-        myadapter_home.notifyDataSetChanged();
-        listView_home.setAdapter(myadapter_home);
 
         listView_home.setOnItemClickListener(
                 new AdapterView.OnItemClickListener(){
@@ -166,7 +188,27 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                     }
                 }
         );
+//        //3.设置适配器,用自定义adapter
+//        myadapter_home.setList(listmap);//给数据
+//        myadapter_home.notifyDataSetChanged();
+//        listView_home.setAdapter(myadapter_home);
     }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    List<Map<String,Object>> list = (List<Map<String,Object>>)msg.obj;
+
+                    myadapter_home.setList(list);//给数据12188，12144，12252
+                    myadapter_home.notifyDataSetChanged();
+                    listView_home.setAdapter(myadapter_home);
+                    break;
+            }
+        }
+    };
 
     public String showDistance(Double doublemoney){
         //米，百米，1公里
