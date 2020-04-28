@@ -101,9 +101,8 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
                     intent.putExtra("orderdetail",edittext_orderdetail.getText().toString());
                     intent.putExtra("money",edittext_money.getText().toString());
                     intent.putExtra("publishuserid", myUserInfo.getuser(getContext()).getUserid());
-
-                    startActivity(intent);
                     deleteInfo();
+                    startActivity(intent);
                     getActivity().finish();
                 }else {
                     //赏金为空
@@ -142,6 +141,7 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
         util.delete("edittext_ordertitle");
         util.delete("edittext_orderdetail");
         util.delete("edittext_money");
+        util.putBoolean("OrderInfo_Exist",false);
     }
 
     public void readInfo(){

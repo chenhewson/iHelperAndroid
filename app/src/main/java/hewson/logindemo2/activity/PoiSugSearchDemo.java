@@ -154,20 +154,13 @@ public class PoiSugSearchDemo extends AppCompatActivity implements OnGetSuggesti
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        System.out.println(simpleAdapter.getItem(i));
-                        //去除花括号，空格
-                        String metaAddress=simpleAdapter.getItem(i).toString();
-                        String str0=metaAddress.replaceAll(" ","");
-                        String str1=str0.replaceAll("\\{","");
-                        String str2=str1.replaceAll("\\}","");
-                        String[] strings=str2.split(",");
-                        String city=strings[0].replaceAll("city=","");
-                        String key=strings[1].replaceAll("key=","");
-                        String dis=strings[2].replaceAll("dis=","");
+                        HashMap<String, String> hashMap= (HashMap<String, String>) simpleAdapter.getItem(i);
+
 
                         //完整地址
-                        String address=city+dis+key;
+                        String address=hashMap.get("city")+hashMap.get("dis")+hashMap.get("key");
                         setKey(address);
+                        Log.i("baiduditu",address);
                         mKeyWordsView.setText(address);
                     }
                 }

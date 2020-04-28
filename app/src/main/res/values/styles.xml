@@ -23,4 +23,10 @@
         <item name="android:textColor">@color/colorGray</item>
     </style>
 
+<!--图片挑选器-->
+    <style name="main_menu_photo_anim">
+        <item name="android:windowEnterAnimation">@anim/photo_dialog_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/photo_dialog_out_anim</item>
+    </style>
+
 </resources>

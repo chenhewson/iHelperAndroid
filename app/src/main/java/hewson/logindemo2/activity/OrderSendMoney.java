@@ -44,6 +44,7 @@ public class OrderSendMoney extends AppCompatActivity implements View.OnClickLis
     BootstrapButton button_order_sendmoney;
     String taskid;
     UserVo userVo=null;
+    boolean isDone;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ public class OrderSendMoney extends AppCompatActivity implements View.OnClickLis
         item_money.setText((String)bundle.getString("money"));
         item_distinct.setText((String)bundle.getString("address"));
         item_distance.setText((String)bundle.getString("distance"));
+        isDone=bundle.getBoolean("isdone");
         item_note.setText("(请前往打赏)");
 
         taskid=bundle.getString("taskid");
@@ -177,27 +179,35 @@ public class OrderSendMoney extends AppCompatActivity implements View.OnClickLis
                         });
                 break;
 
-            case R.id.button_order_sendmoney:
-                Log.i("button_order_sendmoney","打钱");
-                OkhttpUtils.get(Const.IpAddress+"protal/Task/ConfirmDone.do?taskid="+taskid,
-                        new OkHttpCallback(){
-                            @Override
-                            public void OnFinish(String status, String msg) {
-                                super.OnFinish(status, msg);
-                                //解析数据,将json格式的msg转为ServerResponse对象
-                                Gson gson = new Gson();
+            case R.id.button_order_sendmoney:{
+                if(isDone){
+                    Log.i("button_order_sendmoney","打钱");
+                    OkhttpUtils.get(Const.IpAddress+"protal/Task/ConfirmDone.do?taskid="+taskid,
+                            new OkHttpCallback(){
+                                @Override
+                                public void OnFinish(String status, String msg) {
+                                    super.OnFinish(status, msg);
+                                    //解析数据,将json格式的msg转为ServerResponse对象
+                                    Gson gson = new Gson();
 
-                                //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
-                                ServerResponse<UserVo> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<UserVo>>(){}.getType());
+                                    //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
+                                    ServerResponse<UserVo> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<UserVo>>(){}.getType());
 
-                                Looper.prepare();
-                                Toast.makeText(OrderSendMoney.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
-                                Looper.loop();
-                            }
-                        });
-                //跳转到任务接受成功界面
-                OrderSendMoney.this.startActivity(new Intent(OrderSendMoney.this,ReceiveDone_activity.class));
-                OrderSendMoney.this.finish();
+                                    Looper.prepare();
+                                    Toast.makeText(OrderSendMoney.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
+                                    Looper.loop();
+                                }
+                            });
+                    //跳转到任务接受成功界面
+                    OrderSendMoney.this.startActivity(new Intent(OrderSendMoney.this,ReceiveDone_activity.class));
+                    OrderSendMoney.this.finish();
+                }else {
+                    Looper.prepare();
+                    Toast.makeText(OrderSendMoney.this,"任务接受者尚未完成任务！", Toast.LENGTH_LONG).show();
+                    Looper.loop();
+                }
+            }
+
                 break;
         }
     }

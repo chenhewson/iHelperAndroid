@@ -132,10 +132,10 @@ public class home_fragment extends Fragment implements View.OnClickListener{
 
                         //2、获取数据源
                         TreeMap<Double,TaskVo> treeMap=serverResponse.getData();
-                        Set<Double> keys = treeMap.keySet();
-                        List<TaskVo> list =new LinkedList<TaskVo>();
-                        if(treeMap.size()!=0){
+
+                        if(treeMap!=null&&treeMap.size()!=0){
                             listmap.clear();
+                            Set<Double> keys = treeMap.keySet();
                             for(Iterator iter = keys.iterator(); iter.hasNext();){
                                 Map<String,Object> map=new HashMap<String,Object>();
                                 Double keyStr = (Double) iter.next();//获取距离
@@ -143,14 +143,11 @@ public class home_fragment extends Fragment implements View.OnClickListener{
 
                                 //自己发布的任务不展示在首页
                                 if(!taskVo.getPublishuserid().equals(String.valueOf(myUserInfo.getuser(getActivity()).getUserid()))){
-                                    map.put("item_userAvator",R.mipmap.icon_avatar);
-                                    map.put("item_userName",taskVo.gettDetail());//这里是任务详情
-                                    map.put("item_orderTitle",taskVo.gettTitle());
-                                    map.put("distance",showDistance(keyStr));
-                                    map.put("address",taskVo.gettAddress());
-                                    map.put("money",taskVo.gettMoney());
+                                    //任务信息实体类
+                                    map.put("taskVo",taskVo);
 
-                                    map.put("taskid",String.valueOf(taskVo.getTaskid()));
+                                    //任务距离
+                                    map.put("distance",showDistance(keyStr));
                                     listmapTemp.add(map);
                                 }
 
@@ -173,14 +170,20 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                         Bundle bundle = new Bundle();
                         Map<String,Object> map= (Map<String, Object>) myadapter_home.getItem(position);
 
+                        //获取任务实体类
+                        TaskVo taskVo= (TaskVo) map.get("taskVo");
+
+                        //获取距离
+                        String distance=(String)map.get("distance");
+
                         //把参数放到bundle，实现activity传参
                         bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
-                        bundle.putString("item_userName",(String)map.get("item_userName"));
-                        bundle.putString("item_orderTitle",(String)map.get("item_orderTitle"));
-                        bundle.putString("distance",(String)map.get("distance"));
-                        bundle.putString("address",(String) map.get("address"));
-                        bundle.putString("money",String.valueOf(map.get("money")));
-                        bundle.putString("taskid",String.valueOf(map.get("taskid")));
+                        bundle.putString("item_userName",taskVo.gettDetail());
+                        bundle.putString("item_orderTitle",taskVo.gettTitle());
+                        bundle.putString("distance",distance);
+                        bundle.putString("address",taskVo.gettAddress());
+                        bundle.putString("money",String.valueOf(taskVo.gettMoney()));
+                        bundle.putString("taskid",String.valueOf(taskVo.getTaskid()));
 
                         Intent intent=new Intent(getContext(),OrderDetail.class);
                         intent.putExtras(bundle);

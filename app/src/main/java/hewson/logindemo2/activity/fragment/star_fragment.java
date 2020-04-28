@@ -110,6 +110,8 @@ public class star_fragment extends Fragment {
                         Map<String,Object> map= (Map<String, Object>) myadapter_star.getItem(position);
                         TaskVo taskVo= (TaskVo) map.get("TaskVo");
 
+
+
                         //把参数放到bundle，实现activity传参
                         bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
                         bundle.putString("item_userName",taskVo.gettDetail());

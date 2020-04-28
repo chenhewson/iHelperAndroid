@@ -8,14 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 import java.util.Map;
 
 import hewson.logindemo2.R;
+import hewson.logindemo2.vo.TaskVo;
+
 /*
 * 用于操作listview_home，填充数据*/
 public class Myadapter_home extends BaseAdapter {
     List<Map<String,Object>> list;
+    Context context;
 
     //反射器
     LayoutInflater inflater;
@@ -23,6 +29,7 @@ public class Myadapter_home extends BaseAdapter {
     //构造器
     public Myadapter_home(Context context) {
         this.inflater = LayoutInflater.from(context);
+        this.context=context;
     }
 
     //自动生成
@@ -63,15 +70,30 @@ public class Myadapter_home extends BaseAdapter {
 
         //注入值,position是当前item的下标,这里map的key要和addorder_fragment里面的map对应
         Map map=list.get(position);
-        item_userAvator.setImageResource((Integer) map.get("item_userAvator"));//后台需要重新定义一个实体类来保存复合信息
-        item_userName.setText((String)map.get("item_userName"));
-        item_orderTitle.setText((String)map.get("item_orderTitle"));
-        item_money.setText(String.valueOf(map.get("money")));
-        item_distinct.setText((String) map.get("address"));
-        item_distance.setText((String)map.get("distance"));
+        String imagepath="http://img.xiaosen.fun/IMG_0878%2820200426-191036%29.JPG?e=1587903650&token=xHa90Wn7oBwBcoeJAmmQVAGkRRAM_2BBaRpHfD-l:AgaTMboydoVQ1eAgTJ03iwh_5CA=&attname=";
+        //图片显示框架
+        loadGlide(imagepath,item_userAvator);
 
-//        map.put("distance",keyStr);
-//        map.put("address",taskVo.gettAddress());
+        //获取任务实体类
+        TaskVo taskVo= (TaskVo) map.get("taskVo");
+
+        //获取距离
+        String distance=(String)map.get("distance");
+
+        //把值设定到组件上
+        item_userName.setText(taskVo.gettDetail());
+        item_orderTitle.setText(taskVo.gettTitle());
+        item_money.setText(String.valueOf(taskVo.gettMoney()));
+        item_distinct.setText(taskVo.gettAddress());
+        item_distance.setText(distance);
+
         return view;
+    }
+
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(context).load(mUrl).apply(requestOptions).into(mImageView);
     }
 }

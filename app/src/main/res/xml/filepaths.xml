@@ -2,6 +2,7 @@
 <paths>
 <!--    name随便写，path是.表示任意路径-->
     <external-path
+        path="."
         name="external_files"
-        path="."/>
+        />
 </paths>

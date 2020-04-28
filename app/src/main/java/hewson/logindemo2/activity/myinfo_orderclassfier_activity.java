@@ -48,6 +48,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_myinfo_orderclassfier);
         Log.e("未完成任务","oncreate");
         Intent intent=getIntent();
         //0：啥都没有。1：未完成。2：已发布。3：已完成
@@ -56,7 +57,6 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
         //更新list
         sendHttpRequest(flag);
 
-        setContentView(R.layout.activity_myinfo_orderclassfier);
         if(getSupportActionBar()!=null){
             getSupportActionBar().hide();
         }
@@ -140,6 +140,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                         List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
                                         for (TaskVo item:taskVoList){
                                             Map<String,Object> map=new HashMap<String,Object>();
+                                            //已发布
                                             if(!item.gettIsdone()&&!item.gettIsdestroy()){
                                                 map.put("TaskVo",item);
                                                 listmapTemp.add(map);
@@ -160,6 +161,39 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
             }
             case 3:
                 url= Const.IpAddress+"protal/Task/ShouldBeDone.do?finisherid="+myuserid;
+                if(url!=null&&url.length()!=0){
+                    OkhttpUtils.get(url,
+                            new OkHttpCallback(){
+                                @Override
+                                public void OnFinish(String status, String msg) {
+                                    super.OnFinish(status, msg);
+                                    Gson gson=new Gson();
+                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>(){}.getType());
+                                    List<TaskVo> taskVoList=serverResponse.getData();
+                                    if(serverResponse.getStatus()==28){
+                                        imageview_nothing.setImageResource(R.mipmap.icon_nothing);
+                                        textview_note.setText(serverResponse.getMsg());
+                                    }else {
+                                        listmap.clear();
+                                        List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
+                                        for (TaskVo item:taskVoList){
+                                            Map<String,Object> map=new HashMap<String,Object>();
+                                            if(item.gettIsdone()&&item.gettIsdestroy()){
+                                                map.put("TaskVo",item);
+                                                listmapTemp.add(map);
+                                            }
+                                        }
+                                        listmap.addAll(listmapTemp);
+
+                                        Message msge = new Message();
+                                        msge.what = 1;//setadapter,未完成
+                                        msge.obj = listmap;
+                                        mHandler.sendMessage(msge);
+                                    }
+                                }
+                            }
+                    );
+                }
                 break;
         }
     }
@@ -225,7 +259,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                         bundle.putString("address",taskVo.gettAddress());
                                         bundle.putString("money",String.valueOf(taskVo.gettMoney()));
                                         bundle.putString("taskid",String.valueOf(taskVo.getTaskid()));
-
+                                        bundle.putBoolean("isdone",taskVo.gettIsdone());
                                         Intent intent=new Intent(myinfo_orderclassfier_activity.this,OrderSendMoney.class);
                                         intent.putExtras(bundle);
                                         startActivity(intent);

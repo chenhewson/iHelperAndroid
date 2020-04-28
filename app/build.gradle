@@ -56,6 +56,16 @@ dependencies {
 
     compile (name: 'alipaySdk-15.7.4-20200228192259', ext: 'aar')
 
+    //图片加载glide
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    //七牛云
+    compile 'com.qiniu:qiniu-android-sdk:7.5.0'
+
+    //挑选相册照片框架
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+
 }
 allprojects {
     repositories {

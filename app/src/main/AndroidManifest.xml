@@ -24,6 +24,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
+    <!--相机权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
 <!--    android 9.0上使用前台服务，需要添加权限-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -69,6 +72,15 @@
 <!--                </intent-filter>-->
         </activity>
 
+
+        <!--        加载图片测试-->
+        <activity android:name=".activity.ImageActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
         <!-- 首页界面 -->
         <activity android:name=".activity.home_activity"></activity>
 
@@ -110,14 +122,18 @@
 <!--        个人主页任务分类-->
         <activity android:name=".activity.myinfo_orderclassfier_activity"></activity>
 
+<!--        图片挑选器-->
+        <activity android:name=".activity.PictureSelector_activity"></activity>
+
+
 
 
 
 
 <!--        相机-->
         <provider
-            android:authorities="com.fileprovider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="hewson.logindemo2.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
