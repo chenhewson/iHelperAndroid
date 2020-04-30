@@ -2,7 +2,9 @@ package hewson.logindemo2.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.myUserInfo;
 import hewson.logindemo2.vo.ServerResponse;
+import hewson.logindemo2.vo.TaskVo;
 import hewson.logindemo2.vo.UserVo;
 
 public class OrderDone extends AppCompatActivity implements View.OnClickListener{
@@ -43,6 +46,7 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
     BootstrapButton button_order_done;
     String taskid;
     UserVo userVo=null;
+    TaskVo taskVo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,9 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
 
         //解析json，转为user实体类
         userVo= myUserInfo.getuser(OrderDone.this);
+
+        Gson gson=new Gson();
+        taskVo=(TaskVo) gson.fromJson(bundle.getString("TaskVo"),new TypeToken<TaskVo>(){}.getType());
 
         //从bundle获取参数
         item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
@@ -115,12 +122,16 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
 
                         //心愿清单不存在该项
                         if(serverResponse.getStatus()==0){
-                            imageview_heart.setImageResource(R.mipmap.icon_heart);
+                            Message msge = new Message();
+                            msge.what = 3;//setadapter
+                            mHandler.sendMessage(msge);
                         }
 
                         //心愿清单已经存在该项
                         if(serverResponse.getStatus()==1){
-                            imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                            Message msge = new Message();
+                            msge.what = 4;//setadapter
+                            mHandler.sendMessage(msge);
                         }
                     }
                 });
@@ -132,8 +143,8 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
             case R.id.button_start_message:
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setType(TIMConversationType.C2C);//c2c为单聊模式
-                chatInfo.setId(taskUsername);//单聊唯一标识,单聊模式为用户名
-                chatInfo.setChatName(taskUsername);//用户名
+                chatInfo.setId(taskVo.getPublishuserid());//单聊唯一标识,单聊模式为用户名
+                chatInfo.setChatName(taskVo.getPublishuserid());//用户名
                 Intent intent = new Intent(OrderDone.this, ChatActivity.class);//ChatActivity就是用于控制聊天界面的
                 intent.putExtra(Constants.CHAT_INFO, chatInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -156,18 +167,16 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
 
                                 //心愿清单不存在该项，现已加入该项目
                                 if(serverResponse.getStatus()==0){
-                                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
-                                    Looper.prepare();
-                                    Toast.makeText(OrderDone.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
-                                    Looper.loop();
+                                    Message msge = new Message();
+                                    msge.what = 2;//setadapter
+                                    mHandler.sendMessage(msge);
                                 }
 
                                 //心愿清单已经存在该项，现已移除该项目
                                 if(serverResponse.getStatus()==1){
-                                    imageview_heart.setImageResource(R.mipmap.icon_heart);
-                                    Looper.prepare();
-                                    Toast.makeText(OrderDone.this,"已移除！", Toast.LENGTH_LONG).show();
-                                    Looper.loop();
+                                    Message msge = new Message();
+                                    msge.what = 1;//setadapter
+                                    mHandler.sendMessage(msge);
                                 }
                             }
                         });
@@ -202,4 +211,27 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
         super.onDestroy();
         ActivityCollectorUtil.removeActivity(OrderDone.this);
     }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:{//设定红心为空心
+                    imageview_heart.setImageResource(R.mipmap.icon_heart);
+                    Toast.makeText(OrderDone.this,"已移除！", Toast.LENGTH_LONG).show();
+                }break;
+                case 2:{//设定红心为实心
+                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                    Toast.makeText(OrderDone.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
+                }break;
+                case 3:{//设定红心为空心,无提示
+                    imageview_heart.setImageResource(R.mipmap.icon_heart);
+                }break;
+                case 4:{//设定红心为实心，无提示
+                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                }break;
+            }
+        }
+    };
 }

@@ -125,6 +125,12 @@
 <!--        图片挑选器-->
         <activity android:name=".activity.PictureSelector_activity"></activity>
 
+        <!--        支付完成跳转页面-->
+        <activity android:name=".activity.addOrderDone_activity"></activity>
+
+        <!--        已完成任务详细页面-->
+        <activity android:name=".activity.OrderMyDone"></activity>
+
 
 
 

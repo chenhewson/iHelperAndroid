@@ -57,6 +57,8 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
         button_addorder.setOnClickListener(this);
         //配置沙箱环境
         EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
+
+        deleteInfo();
         return view;
     }
 
@@ -101,7 +103,6 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
                     intent.putExtra("orderdetail",edittext_orderdetail.getText().toString());
                     intent.putExtra("money",edittext_money.getText().toString());
                     intent.putExtra("publishuserid", myUserInfo.getuser(getContext()).getUserid());
-                    deleteInfo();
                     startActivity(intent);
                     getActivity().finish();
                 }else {
@@ -141,7 +142,7 @@ public class addorder_fragment extends Fragment implements View.OnClickListener{
         util.delete("edittext_ordertitle");
         util.delete("edittext_orderdetail");
         util.delete("edittext_money");
-        util.putBoolean("OrderInfo_Exist",false);
+        util.delete("OrderInfo_Exist");
     }
 
     public void readInfo(){

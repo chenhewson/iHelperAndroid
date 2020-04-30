@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +53,8 @@ public class home_fragment extends Fragment implements View.OnClickListener{
     private List<Map<String,Object>> listmap=new ArrayList<Map<String,Object>>();
     Myadapter_home myadapter_home;
     ListView listView_home;
+    ImageView imageview_nothing;
+    TextView textview_note;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,15 +79,15 @@ public class home_fragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i("view","view==null");
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        listView_home=view.findViewById(R.id.listview_home);
-
-
-//        linearlayout_heart=view.findViewById(R.id.linearlayout_heart);
-//        imageview_heart=(ImageView)view.findViewById(R.id.imageview_heart);
-
-//        linearlayout_heart.setOnClickListener(this);
+        initMyView(view);
         Log.i("home_fragment","onCreateView");
         return view;
+    }
+
+    private void initMyView(View view) {
+        listView_home=view.findViewById(R.id.listview_home);
+        textview_note=view.findViewById(R.id.textview_note);
+        imageview_nothing=view.findViewById(R.id.imageview_nothing);
     }
 
     @Override
@@ -150,6 +155,14 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                                     map.put("distance",showDistance(keyStr));
                                     listmapTemp.add(map);
                                 }
+                                if(listmapTemp==null||listmapTemp.size()==0){
+                                    //处理列表为空的情况
+                                    Message msge = new Message();
+
+                                    //设定任务列表为空时展示404图片和提示信息
+                                    msge.what = 2;
+                                    mHandler.sendMessage(msge);
+                                }
 
                             }
                             listmap.addAll(listmapTemp);
@@ -157,6 +170,14 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                             Message msge = new Message();
                             msge.what = 1;//setadapter
                             msge.obj = listmap;
+                            mHandler.sendMessage(msge);
+                        }
+                        else {
+                            //处理列表为空的情况
+                            Message msge = new Message();
+
+                            //设定任务列表为空时展示404图片和提示信息
+                            msge.what = 2;
                             mHandler.sendMessage(msge);
                         }
                     }
@@ -209,6 +230,11 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                     myadapter_home.notifyDataSetChanged();
                     listView_home.setAdapter(myadapter_home);
                     break;
+                case 2:{
+                    //设定任务列表为空时展示404图片和提示信息
+                    textview_note.setText("任务列表为空！");
+                    imageview_nothing.setImageResource(R.mipmap.icon_nothing);
+                }break;
             }
         }
     };

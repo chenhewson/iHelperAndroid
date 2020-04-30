@@ -3,7 +3,9 @@ package hewson.logindemo2.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +21,9 @@ import com.google.gson.reflect.TypeToken;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 
+import java.util.List;
+import java.util.Map;
+
 import hewson.logindemo2.R;
 import hewson.logindemo2.activity.chat.ChatActivity;
 import hewson.logindemo2.common.Const;
@@ -27,6 +32,7 @@ import hewson.logindemo2.utils.Constants;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.SharePreferencesUtil;
+import hewson.logindemo2.utils.myUserInfo;
 import hewson.logindemo2.vo.ServerResponse;
 import hewson.logindemo2.vo.UserVo;
 
@@ -70,13 +76,7 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
         Bundle bundle=getIntent().getExtras();
 
-        //获取保存在SharePreferences中当前登录的user
-        final SharePreferencesUtil util=SharePreferencesUtil.getSharePreferencesInstance(OrderDetail.this);
-        String userinfo=util.readString("user");
-
-        //解析json，转为user实体类
-        Gson gson=new Gson();
-        userVo=gson.fromJson(userinfo, UserVo.class);
+        userVo= myUserInfo.getuser(OrderDetail.this);
 
         //从bundle获取参数
         item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
@@ -121,12 +121,18 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
                         //心愿清单不存在该项
                         if(serverResponse.getStatus()==0){
-                            imageview_heart.setImageResource(R.mipmap.icon_heart);
+                            //设定红心为空心
+                            Message message=mHandler.obtainMessage();
+                            message.what=1;
+                            mHandler.sendMessage(message);
                         }
 
                         //心愿清单已经存在该项
                         if(serverResponse.getStatus()==1){
-                            imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                            //设定红心为实心
+                            Message message=mHandler.obtainMessage();
+                            message.what=2;
+                            mHandler.sendMessage(message);
                         }
                     }
                 });
@@ -162,7 +168,9 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
                                 //心愿清单不存在该项，现已加入该项目
                                 if(serverResponse.getStatus()==0){
-                                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                                    Message message=mHandler.obtainMessage();
+                                    message.what=2;
+                                    mHandler.sendMessage(message);
                                     Looper.prepare();
                                     Toast.makeText(OrderDetail.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
                                     Looper.loop();
@@ -170,10 +178,9 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
                                 //心愿清单已经存在该项，现已移除该项目
                                 if(serverResponse.getStatus()==1){
-                                    imageview_heart.setImageResource(R.mipmap.icon_heart);
-                                    Looper.prepare();
-                                    Toast.makeText(OrderDetail.this,"已移除！", Toast.LENGTH_LONG).show();
-                                    Looper.loop();
+                                    Message message=mHandler.obtainMessage();
+                                    message.what=1;
+                                    mHandler.sendMessage(message);
                                 }
                             }
                         });
@@ -191,9 +198,7 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
                                 //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
                                 ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
-                                Looper.prepare();
                                 Toast.makeText(OrderDetail.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
-                                Looper.loop();
                             }
                         });
                 //跳转到任务接受成功界面
@@ -208,4 +213,27 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
         super.onDestroy();
         ActivityCollectorUtil.removeActivity(OrderDetail.this);
     }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:{//设定红心为空心
+                    imageview_heart.setImageResource(R.mipmap.icon_heart);
+                    Toast.makeText(OrderDetail.this,"已移除！", Toast.LENGTH_LONG).show();
+                }break;
+                case 2:{//设定红心为实心
+                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                    Toast.makeText(OrderDetail.this,"已加入心愿单！", Toast.LENGTH_LONG).show();
+                }break;
+                case 3:{//设定红心为空心,无提示
+                    imageview_heart.setImageResource(R.mipmap.icon_heart);
+                }break;
+                case 4:{//设定红心为实心，无提示
+                    imageview_heart.setImageResource(R.mipmap.icon_heart_selected);
+                }break;
+            }
+        }
+    };
 }

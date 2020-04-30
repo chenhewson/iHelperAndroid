@@ -35,7 +35,7 @@ import hewson.logindemo2.vo.TaskVo;
 import hewson.logindemo2.vo.UserVo;
 
 public class myinfo_orderclassfier_activity extends AppCompatActivity implements View.OnClickListener {
-    private List<Map<String,Object>> listmap=new ArrayList<Map<String,Object>>();
+    private List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();
     TextView textview_topbar;
     Myadapter_orderclassfier myadapter_orderclassfier;
     ListView listview_empty;
@@ -45,29 +45,30 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
 
     String myresult;
     ServerResponse<List<TaskVo>> serverResponse;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myinfo_orderclassfier);
-        Log.e("未完成任务","oncreate");
-        Intent intent=getIntent();
+        Log.e("未完成任务", "oncreate");
+        Intent intent = getIntent();
         //0：啥都没有。1：未完成。2：已发布。3：已完成
-        int flag=intent.getIntExtra("flag",0);
+        int flag = intent.getIntExtra("flag", 0);
 
         //更新list
         sendHttpRequest(flag);
 
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
         ActivityCollectorUtil.addActivity(myinfo_orderclassfier_activity.this);
-        textview_topbar=findViewById(R.id.textview_topbar);
-        listview_empty=findViewById(R.id.listview_empty);
-        button_seemore=findViewById(R.id.button_seemore);
-        textview_note=findViewById(R.id.textview_note);
-        imageview_nothing=findViewById(R.id.imageview_nothing);
+        textview_topbar = findViewById(R.id.textview_topbar);
+        listview_empty = findViewById(R.id.listview_empty);
+        button_seemore = findViewById(R.id.button_seemore);
+        textview_note = findViewById(R.id.textview_note);
+        imageview_nothing = findViewById(R.id.imageview_nothing);
         button_seemore.setOnClickListener(this);
-        myadapter_orderclassfier=new Myadapter_orderclassfier(this,flag);
+        myadapter_orderclassfier = new Myadapter_orderclassfier(this, flag);
 
         //设置flag
 //        setadapter(flag);
@@ -76,35 +77,37 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
     }
 
 
-
     //后台请求数据
     private void sendHttpRequest(int flag) {
-        UserVo userVo= myUserInfo.getuser(this);
-        String myuserid= String.valueOf(userVo.getUserid());
-        String url=null;
+        UserVo userVo = myUserInfo.getuser(this);
+        String myuserid = String.valueOf(userVo.getUserid());
+        String url = null;
         //0：啥都没有。1：未完成。2：已发布。3：已完成
-        switch (flag){
-            case 1:{
-                url= Const.IpAddress+"protal/Task/ShouldBeDone.do?finisherid="+myuserid;
-                if(url!=null&&url.length()!=0){
+        switch (flag) {
+            case 1: {
+                url = Const.IpAddress + "protal/Task/ShouldBeDone.do?finisherid=" + myuserid;
+                if (url != null && url.length() != 0) {
                     OkhttpUtils.get(url,
-                            new OkHttpCallback(){
+                            new OkHttpCallback() {
                                 @Override
                                 public void OnFinish(String status, String msg) {
                                     super.OnFinish(status, msg);
-                                    Gson gson=new Gson();
-                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>(){}.getType());
-                                    List<TaskVo> taskVoList=serverResponse.getData();
-                                    if(serverResponse.getStatus()==28){
-                                        imageview_nothing.setImageResource(R.mipmap.icon_nothing);
-                                        textview_note.setText(serverResponse.getMsg());
-                                    }else {
+                                    Gson gson = new Gson();
+                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>() {
+                                    }.getType());
+                                    List<TaskVo> taskVoList = serverResponse.getData();
+                                    if (serverResponse.getStatus() == 28) {
+                                        Message message = mHandler.obtainMessage();
+                                        message.what = 3;
+                                        message.obj = serverResponse.getMsg();
+                                        mHandler.sendMessage(message);
+                                    } else {
                                         listmap.clear();
-                                        List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
-                                        for (TaskVo item:taskVoList){
-                                            Map<String,Object> map=new HashMap<String,Object>();
-                                            if(!item.gettIsdone()){
-                                                map.put("TaskVo",item);
+                                        List<Map<String, Object>> listmapTemp = new ArrayList<Map<String, Object>>();
+                                        for (TaskVo item : taskVoList) {
+                                            Map<String, Object> map = new HashMap<String, Object>();
+                                            if (!item.gettIsdone()) {
+                                                map.put("TaskVo", item);
                                                 listmapTemp.add(map);
                                             }
                                         }
@@ -121,30 +124,29 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                 }
                 break;
             }
-            case 2:{
-                url= Const.IpAddress+"protal/Task/MyPublished.do?publishid="+myuserid;
-                if(url!=null&&url.length()!=0){
+            case 2: {
+                url = Const.IpAddress + "protal/Task/MyPublished.do?publishid=" + myuserid;
+                if (url != null && url.length() != 0) {
                     OkhttpUtils.get(url,
-                            new OkHttpCallback(){
+                            new OkHttpCallback() {
                                 @Override
                                 public void OnFinish(String status, String msg) {
                                     super.OnFinish(status, msg);
-                                    Gson gson=new Gson();
-                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>(){}.getType());
-                                    List<TaskVo> taskVoList=serverResponse.getData();
-                                    if(serverResponse.getStatus()==29){
+                                    Gson gson = new Gson();
+                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>() {
+                                    }.getType());
+                                    List<TaskVo> taskVoList = serverResponse.getData();
+                                    if (serverResponse.getStatus() == 29) {
                                         imageview_nothing.setImageResource(R.mipmap.icon_nothing);
                                         textview_note.setText(serverResponse.getMsg());
-                                    }else {
+                                    } else {
                                         listmap.clear();
-                                        List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
-                                        for (TaskVo item:taskVoList){
-                                            Map<String,Object> map=new HashMap<String,Object>();
+                                        List<Map<String, Object>> listmapTemp = new ArrayList<Map<String, Object>>();
+                                        for (TaskVo item : taskVoList) {
+                                            Map<String, Object> map = new HashMap<String, Object>();
                                             //已发布
-                                            if(!item.gettIsdone()&&!item.gettIsdestroy()){
-                                                map.put("TaskVo",item);
-                                                listmapTemp.add(map);
-                                            }
+                                            map.put("TaskVo", item);
+                                            listmapTemp.add(map);
                                         }
                                         listmap.addAll(listmapTemp);
 
@@ -160,33 +162,35 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                 break;
             }
             case 3:
-                url= Const.IpAddress+"protal/Task/ShouldBeDone.do?finisherid="+myuserid;
-                if(url!=null&&url.length()!=0){
+                url = Const.IpAddress + "protal/Task/ShouldBeDone.do?finisherid=" + myuserid;
+                if (url != null && url.length() != 0) {
                     OkhttpUtils.get(url,
-                            new OkHttpCallback(){
+                            new OkHttpCallback() {
                                 @Override
                                 public void OnFinish(String status, String msg) {
                                     super.OnFinish(status, msg);
-                                    Gson gson=new Gson();
-                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>(){}.getType());
-                                    List<TaskVo> taskVoList=serverResponse.getData();
-                                    if(serverResponse.getStatus()==28){
-                                        imageview_nothing.setImageResource(R.mipmap.icon_nothing);
-                                        textview_note.setText(serverResponse.getMsg());
-                                    }else {
+                                    Gson gson = new Gson();
+                                    serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>() {
+                                    }.getType());
+                                    List<TaskVo> taskVoList = serverResponse.getData();
+                                    if (serverResponse.getStatus() == 28) {
+                                        Message messg = mHandler.obtainMessage();
+                                        messg.what = 3;
+                                        messg.obj = serverResponse.getMsg();
+                                        mHandler.sendMessage(messg);
+                                    } else {
                                         listmap.clear();
-                                        List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
-                                        for (TaskVo item:taskVoList){
-                                            Map<String,Object> map=new HashMap<String,Object>();
-                                            if(item.gettIsdone()&&item.gettIsdestroy()){
-                                                map.put("TaskVo",item);
+                                        List<Map<String, Object>> listmapTemp = new ArrayList<Map<String, Object>>();
+                                        for (TaskVo item : taskVoList) {
+                                            Map<String, Object> map = new HashMap<String, Object>();
+                                            if (item.gettIsdone() ) {
+                                                map.put("TaskVo", item);
                                                 listmapTemp.add(map);
                                             }
                                         }
                                         listmap.addAll(listmapTemp);
-
                                         Message msge = new Message();
-                                        msge.what = 1;//setadapter,未完成
+                                        msge.what = 4;//作为接受者已完成的任务
                                         msge.obj = listmap;
                                         mHandler.sendMessage(msge);
                                     }
@@ -198,37 +202,40 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
         }
     }
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    List<Map<String,Object>> list = (List<Map<String,Object>>)msg.obj;
-                    myadapter_orderclassfier.setList(list);
-                    if(listmap.size()==0){
+            switch (msg.what) {
+                case 1://未完成
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) msg.obj;
+                    if (listmap.size() == 0) {
                         imageview_nothing.setImageResource(R.mipmap.icon_nothing);
                         textview_note.setText("空空如也~");
-                    }else {
+                    } else {
+                        myadapter_orderclassfier.setList(list);
                         myadapter_orderclassfier.notifyDataSetChanged();
                         listview_empty.setAdapter(myadapter_orderclassfier);
                         listview_empty.setOnItemClickListener(
-                                new AdapterView.OnItemClickListener(){
+                                new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Bundle bundle = new Bundle();
-                                        Map<String,Object> map= (Map<String, Object>) myadapter_orderclassfier.getItem(position);
-                                        TaskVo taskVo= (TaskVo) map.get("TaskVo");
+                                        Map<String, Object> map = (Map<String, Object>) myadapter_orderclassfier.getItem(position);
+                                        TaskVo taskVo = (TaskVo) map.get("TaskVo");
+                                        Gson gson=new Gson();
+                                        String taskStr=gson.toJson(taskVo,new TypeToken<TaskVo>(){}.getType());
+                                        bundle.putString("TaskVo",taskStr);
                                         //把参数放到bundle，实现activity传参
-                                        bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
-                                        bundle.putString("item_userName",taskVo.gettDetail());
-                                        bundle.putString("item_orderTitle",taskVo.gettTitle());
-                                        bundle.putString("distance","");
-                                        bundle.putString("address",taskVo.gettAddress());
-                                        bundle.putString("money",String.valueOf(taskVo.gettMoney()));
-                                        bundle.putString("taskid",String.valueOf(taskVo.getTaskid()));
+                                        bundle.putInt("item_userAvator", R.mipmap.icon_avatar);
+                                        bundle.putString("item_userName", taskVo.gettDetail());
+                                        bundle.putString("item_orderTitle", taskVo.gettTitle());
+                                        bundle.putString("distance", "");
+                                        bundle.putString("address", taskVo.gettAddress());
+                                        bundle.putString("money", String.valueOf(taskVo.gettMoney()));
+                                        bundle.putString("taskid", String.valueOf(taskVo.getTaskid()));
 
-                                        Intent intent=new Intent(myinfo_orderclassfier_activity.this,OrderDone.class);
+                                        Intent intent = new Intent(myinfo_orderclassfier_activity.this, OrderDone.class);
                                         intent.putExtras(bundle);
                                         startActivity(intent);
                                     }
@@ -236,31 +243,34 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                         );
                     }
                     break;
-                case 2:
-                    if(listmap.size()==0){
+                case 2://已发布
+                    if (listmap.size() == 0) {
                         imageview_nothing.setImageResource(R.mipmap.icon_nothing);
                         textview_note.setText("空空如也~");
-                    }else {
+                    } else {
                         myadapter_orderclassfier.setList(listmap);
                         myadapter_orderclassfier.notifyDataSetChanged();
                         listview_empty.setAdapter(myadapter_orderclassfier);
                         listview_empty.setOnItemClickListener(
-                                new AdapterView.OnItemClickListener(){
+                                new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Bundle bundle = new Bundle();
-                                        Map<String,Object> map= (Map<String, Object>) myadapter_orderclassfier.getItem(position);
-                                        TaskVo taskVo= (TaskVo) map.get("TaskVo");
+                                        Map<String, Object> map = (Map<String, Object>) myadapter_orderclassfier.getItem(position);
+                                        TaskVo taskVo = (TaskVo) map.get("TaskVo");
+                                        Gson gson=new Gson();
+                                        String taskStr=gson.toJson(taskVo,new TypeToken<TaskVo>(){}.getType());
+                                        bundle.putString("TaskVo",taskStr);
                                         //把参数放到bundle，实现activity传参
-                                        bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
-                                        bundle.putString("item_userName",taskVo.gettDetail());
-                                        bundle.putString("item_orderTitle",taskVo.gettTitle());
-                                        bundle.putString("distance","");
-                                        bundle.putString("address",taskVo.gettAddress());
-                                        bundle.putString("money",String.valueOf(taskVo.gettMoney()));
-                                        bundle.putString("taskid",String.valueOf(taskVo.getTaskid()));
-                                        bundle.putBoolean("isdone",taskVo.gettIsdone());
-                                        Intent intent=new Intent(myinfo_orderclassfier_activity.this,OrderSendMoney.class);
+                                        bundle.putInt("item_userAvator", R.mipmap.icon_avatar);
+                                        bundle.putString("item_userName", taskVo.gettDetail());
+                                        bundle.putString("item_orderTitle", taskVo.gettTitle());
+                                        bundle.putString("distance", "");
+                                        bundle.putString("address", taskVo.gettAddress());
+                                        bundle.putString("money", String.valueOf(taskVo.gettMoney()));
+                                        bundle.putString("taskid", String.valueOf(taskVo.getTaskid()));
+                                        bundle.putBoolean("isdone", taskVo.gettIsdone());
+                                        Intent intent = new Intent(myinfo_orderclassfier_activity.this, OrderSendMoney.class);
                                         intent.putExtras(bundle);
                                         startActivity(intent);
                                     }
@@ -268,12 +278,52 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                         );
                     }
                     break;
+                case 3://出现列表为空时，设定图片为404，并显示提示信息
+                {
+                    String note = (String) msg.obj;
+                    imageview_nothing.setImageResource(R.mipmap.icon_nothing);
+                    textview_note.setText(note);
+                }
+                break;
+                case 4://已完成
+                {
+                    myadapter_orderclassfier.setList(listmap);
+                    myadapter_orderclassfier.notifyDataSetChanged();
+                    listview_empty.setAdapter(myadapter_orderclassfier);
+                    listview_empty.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Bundle bundle = new Bundle();
+                                    Map<String, Object> map = (Map<String, Object>) myadapter_orderclassfier.getItem(position);
+                                    TaskVo taskVo = (TaskVo) map.get("TaskVo");
+                                    Gson gson = new Gson();
+                                    String taskStr = gson.toJson(taskVo);
+                                    //把参数放到bundle，实现activity传参
+                                    bundle.putString("taskVo", taskStr);
+
+                                    bundle.putInt("item_userAvator", R.mipmap.icon_avatar);
+                                    bundle.putString("item_userName", taskVo.gettDetail());
+                                    bundle.putString("item_orderTitle", taskVo.gettTitle());
+                                    bundle.putString("distance", "");
+                                    bundle.putString("address", taskVo.gettAddress());
+                                    bundle.putString("money", String.valueOf(taskVo.gettMoney()));
+                                    bundle.putString("taskid", String.valueOf(taskVo.getTaskid()));
+                                    bundle.putBoolean("isdone", taskVo.gettIsdone());
+                                    Intent intent = new Intent(myinfo_orderclassfier_activity.this, OrderMyDone.class);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            }
+                    );
+                }
+                break;
             }
         }
     };
 
     private void initTopBar(int flag) {
-        switch (flag){
+        switch (flag) {
             //0：啥都没有。1：未完成。2：已发布。3：已完成
             case 1:
                 textview_topbar.setText("未完成任务");
@@ -295,10 +345,10 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.button_seemore:
                 //activity的跳转,跳转到首页。注意：Looper.loop();不能使用！！！
-                Intent intent=new Intent(myinfo_orderclassfier_activity.this,home_activity.class);
+                Intent intent = new Intent(myinfo_orderclassfier_activity.this, home_activity.class);
                 myinfo_orderclassfier_activity.this.startActivity(intent);
                 //关闭当前activity
                 myinfo_orderclassfier_activity.this.finish();

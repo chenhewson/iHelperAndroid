@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +40,8 @@ public class star_fragment extends Fragment {
     private List<Map<String,Object>> listmap=new ArrayList<Map<String,Object>>();
     Myadapter_star myadapter_star;
     ListView listView_star;
+    ImageView imageview_nothing;
+    TextView textview_note;
     private View view;
     @Nullable
     @Override
@@ -45,13 +49,20 @@ public class star_fragment extends Fragment {
         if(view == null){
             Log.i("view","view==null");
             view = inflater.inflate(R.layout.fragment_star, container, false);
-            listView_star=view.findViewById(R.id.listview_star);
+            initMyView(view);
             myadapter_star=new Myadapter_star(getContext());
             getOrderList();
         }
         Log.i("home_fragment","onCreateView");
         return view;
     }
+
+    private void initMyView(View view) {
+        listView_star=view.findViewById(R.id.listview_star);
+        imageview_nothing=view.findViewById(R.id.imageview_nothing);
+        textview_note=view.findViewById(R.id.textview_note);
+    }
+
 
     @Override
     public void onPause() {
@@ -84,21 +95,28 @@ public class star_fragment extends Fragment {
                         ServerResponse<List<TaskVo>> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<List<TaskVo>>>(){}.getType());
                         //3.得到tasklist
                         List<TaskVo> taskVoList=serverResponse.getData();
+                        if(taskVoList!=null&&taskVoList.size()!=0){
+                            //4.tasklist不为空，将tasklist中的每个元素绑定到listmap中
+                            listmap.clear();
+                            List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
+                            for (TaskVo item:taskVoList){
+                                Map<String,Object> map=new HashMap<String,Object>();
+                                map.put("TaskVo",item);
+                                listmapTemp.add(map);
+                            }
+                            listmap.addAll(listmapTemp);
 
-//                      //4.将tasklist中的每个元素绑定到listmap中
-                        listmap.clear();
-                        List<Map<String,Object>> listmapTemp=new ArrayList<Map<String,Object>>();
-                        for (TaskVo item:taskVoList){
-                            Map<String,Object> map=new HashMap<String,Object>();
-                            map.put("TaskVo",item);
-                            listmapTemp.add(map);
+                            Message msge = new Message();
+                            msge.what = 1;//setadapter
+                            msge.obj = listmap;
+                            mHandler.sendMessage(msge);
+                        }else {
+                            Message msge = new Message();
+                            msge.what = 2;//setadapter
+                            mHandler.sendMessage(msge);
                         }
-                        listmap.addAll(listmapTemp);
 
-                        Message msge = new Message();
-                        msge.what = 1;//setadapter
-                        msge.obj = listmap;
-                        mHandler.sendMessage(msge);
+
                     }
                 }
         );
@@ -134,14 +152,19 @@ public class star_fragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case 1:
+                case 1:{
                     List<Map<String,Object>> list = (List<Map<String,Object>>)msg.obj;
 
 
                     myadapter_star.setList(list);//给数据
                     myadapter_star.notifyDataSetChanged();
                     listView_star.setAdapter(myadapter_star);
-                    break;
+                }break;
+                case 2:{
+                    textview_note.setText("心愿单为空！快去关注一波~");
+                    imageview_nothing.setImageResource(R.mipmap.icon_nothing);
+                }break;
+
             }
         }
     };

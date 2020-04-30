@@ -116,7 +116,8 @@ public class pay_activity extends AppCompatActivity implements View.OnClickListe
                     if (TextUtils.equals(resultStatus, "9000")) {
 
                         //支付成功，即可执行插入任务操作
-                        showAlert(pay_activity.this, "支付成功！" );
+//                        showAlert(pay_activity.this, "支付成功！" );
+                        pay_activity.this.startActivity(new Intent(pay_activity.this, addOrderDone_activity.class));
 
                         OkhttpUtils.get(Const.IpAddress+"protal/Task/addTask.do?publishuserid="+publishuserid+"&tTitle="+textview_ordertitle.getText().toString()+"&tDetail="+textview_orderdetail.getText().toString()+"&tMoney="+textview_money.getText().toString()+"&tAddress="+textview_distinction.getText().toString(),
                                 new OkHttpCallback(){
@@ -133,7 +134,6 @@ public class pay_activity extends AppCompatActivity implements View.OnClickListe
                                         Looper.loop();
                                     }
                                 });
-//                        pay_activity.this.startActivity(new Intent(pay_activity.this, addOrderDone_activity.class));
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
 //                        showAlert(getContext(), getString(R.string.pay_failed) + payResult);

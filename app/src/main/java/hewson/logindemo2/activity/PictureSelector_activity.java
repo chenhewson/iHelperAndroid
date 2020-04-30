@@ -218,7 +218,7 @@ public class PictureSelector_activity extends AppCompatActivity implements View.
                                 .openGallery(PictureMimeType.ofImage())
                                 .maxSelectNum(maxSelectNum)
                                 .minSelectNum(1)
-                                .imageSpanCount(4)
+                                .imageSpanCount(1)
                                 .selectionMode(PictureConfig.MULTIPLE)
                                 .forResult(PictureConfig.CHOOSE_REQUEST);
                         break;
@@ -328,9 +328,7 @@ public class PictureSelector_activity extends AppCompatActivity implements View.
                     }
                 });
 
-        if(isuploadOK){
-            myUserInfo.setuser(PictureSelector_activity.this);
-        }
+
 
 
 
@@ -367,7 +365,8 @@ public class PictureSelector_activity extends AppCompatActivity implements View.
                                                         //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
                                                         ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
                                                         Looper.prepare();
-                                                        Toast.makeText(PictureSelector_activity.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(PictureSelector_activity.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();                                                        //关闭当前activity
+                                                        PictureSelector_activity.this.finish();
                                                         Looper.loop();
                                                     }
                                                 });
