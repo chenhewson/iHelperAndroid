@@ -131,6 +131,14 @@
         <!--        已完成任务详细页面-->
         <activity android:name=".activity.OrderMyDone"></activity>
 
+        <!--        钱包-->
+        <activity android:name=".activity.money_activity"></activity>
+
+        <!--        修改个人信息-->
+        <activity android:name=".activity.UpdateMyInfo_activity"></activity>
+
+
+
 
 
 

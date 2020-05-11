@@ -1,14 +1,13 @@
 package hewson.logindemo2.activity.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,8 +21,10 @@ import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMManager;
 
 import hewson.logindemo2.R;
+import hewson.logindemo2.activity.UpdateMyInfo_activity;
 import hewson.logindemo2.activity.PictureSelector_activity;
 import hewson.logindemo2.activity.login_activity;
+import hewson.logindemo2.activity.money_activity;
 import hewson.logindemo2.activity.myinfo_orderclassfier_activity;
 import hewson.logindemo2.utils.ActivityCollectorUtil;
 import hewson.logindemo2.utils.SharePreferencesUtil;
@@ -41,6 +42,7 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
     ImageView imageview_published;
     ImageView imageview_done;
     ImageView imageview_money;
+    RelativeLayout container_myinfo;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
         textview_username=view.findViewById(R.id.textview_username);
         imageview_avator=view.findViewById(R.id.imageview_avator);
         exit_login=view.findViewById(R.id.button_exit);
+        container_myinfo=view.findViewById(R.id.container_myinfo);
 
         loadGlide(userVo.gettAvator()+"?imageView2/1/w/200/h/200/interlace/0/q/100",imageview_avator);
 
@@ -65,6 +68,7 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
         imageview_done.setOnClickListener(this);
         imageview_money.setOnClickListener(this);
         imageview_avator.setOnClickListener(this);
+        container_myinfo.setOnClickListener(this);
         return view;
     }
 
@@ -141,10 +145,15 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
                 getActivity().startActivity(initIntent(3));
                 break;
             case R.id.imageview_money:
+                getActivity().startActivity(new Intent(getActivity(), money_activity.class));
                 break;
             case R.id.imageview_avator:
                 getActivity().startActivity(new Intent(getActivity(), PictureSelector_activity.class));
                 break;
+            case R.id.container_myinfo:
+                getActivity().startActivity(new Intent(getActivity(), UpdateMyInfo_activity.class));
+                break;
+
         }
     }
 

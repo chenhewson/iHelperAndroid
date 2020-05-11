@@ -28,11 +28,7 @@ public class register_activity extends AppCompatActivity implements View.OnClick
     private EditText register_emailEdit;
     private BootstrapButton confirmRegister_button;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ActivityCollectorUtil.removeActivity(this);
-    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,5 +89,11 @@ public class register_activity extends AppCompatActivity implements View.OnClick
                 });
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollectorUtil.removeActivity(this);
     }
 }
