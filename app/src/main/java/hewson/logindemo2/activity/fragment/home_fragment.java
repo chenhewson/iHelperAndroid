@@ -155,15 +155,14 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                                     map.put("distance",showDistance(keyStr));
                                     listmapTemp.add(map);
                                 }
-                                if(listmapTemp==null||listmapTemp.size()==0){
-                                    //处理列表为空的情况
-                                    Message msge = new Message();
+                            }
+                            if(listmapTemp==null||listmapTemp.size()==0){
+                                //处理列表为空的情况
+                                Message msge = new Message();
 
-                                    //设定任务列表为空时展示404图片和提示信息
-                                    msge.what = 2;
-                                    mHandler.sendMessage(msge);
-                                }
-
+                                //设定任务列表为空时展示404图片和提示信息
+                                msge.what = 2;
+                                mHandler.sendMessage(msge);
                             }
                             listmap.addAll(listmapTemp);
 
@@ -205,6 +204,9 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                         bundle.putString("address",taskVo.gettAddress());
                         bundle.putString("money",String.valueOf(taskVo.gettMoney()));
                         bundle.putString("taskid",String.valueOf(taskVo.getTaskid()));
+
+                        bundle.putDouble("jingdu",taskVo.gettJingdu().doubleValue());
+                        bundle.putDouble("weidu",taskVo.gettWeidu().doubleValue());
 
                         Intent intent=new Intent(getContext(),OrderDetail.class);
                         intent.putExtras(bundle);

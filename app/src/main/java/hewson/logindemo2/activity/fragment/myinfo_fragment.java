@@ -52,7 +52,7 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
         imageview_avator=view.findViewById(R.id.imageview_avator);
         exit_login=view.findViewById(R.id.button_exit);
 
-        loadGlide(userVo.gettAvator(),imageview_avator);
+        loadGlide(userVo.gettAvator()+"?imageView2/1/w/200/h/200/interlace/0/q/100",imageview_avator);
 
         imageview_no_done=view.findViewById(R.id.imageview_no_done);
         imageview_published=view.findViewById(R.id.imageview_published);

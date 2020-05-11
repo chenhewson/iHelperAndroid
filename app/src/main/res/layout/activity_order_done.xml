@@ -150,6 +150,12 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/bmapView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:clickable="true" />
+
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/button_start_message"
                 android:layout_marginTop="10dp"

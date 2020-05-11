@@ -139,6 +139,9 @@ public class star_fragment extends Fragment {
                         bundle.putString("money",String.valueOf(taskVo.gettMoney()));
                         bundle.putString("taskid",String.valueOf(taskVo.getTaskid()));
 
+                        bundle.putDouble("jingdu",taskVo.gettJingdu().doubleValue());
+                        bundle.putDouble("weidu",taskVo.gettWeidu().doubleValue());
+
                         Intent intent=new Intent(getContext(), OrderDetail.class);
                         intent.putExtras(bundle);
                         startActivity(intent);

@@ -137,8 +137,10 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                     }.getType());
                                     List<TaskVo> taskVoList = serverResponse.getData();
                                     if (serverResponse.getStatus() == 29) {
-                                        imageview_nothing.setImageResource(R.mipmap.icon_nothing);
-                                        textview_note.setText(serverResponse.getMsg());
+                                        Message message=mHandler.obtainMessage();
+                                        message.what=3;
+                                        message.obj=serverResponse.getMsg();
+                                        mHandler.sendMessage(message);
                                     } else {
                                         listmap.clear();
                                         List<Map<String, Object>> listmapTemp = new ArrayList<Map<String, Object>>();

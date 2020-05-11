@@ -14,6 +14,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,6 +55,7 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
     String taskid;
     UserVo userVo=null;
     TaskVo taskVo;
+    MapView bmapView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +66,8 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
             getSupportActionBar().hide();
         }
         //获取item布局中的组件的id
-        item_userAvator=(ImageView)findViewById(R.id.detail_userAvator);
-        item_userName=(TextView)findViewById(R.id.detail_userName);
-        item_orderTitle=(TextView)findViewById(R.id.detail_orderTitle);
-        item_money=(TextView)findViewById(R.id.detail_money);
-        item_distinct=(TextView)findViewById(R.id.detail_distinct);
-        item_distance=(TextView)findViewById(R.id.detail_distance);
-        imageview_heart=(ImageView)findViewById(R.id.imageview_heart);
-        button_order_done=(BootstrapButton)findViewById(R.id.button_order_done);
+        initMyview();
 
-        button_start_message=(BootstrapButton)findViewById(R.id.button_start_message);
         button_start_message.setOnClickListener(this);
         imageview_heart.setOnClickListener(this);
         button_order_done.setOnClickListener(this);
@@ -86,6 +87,11 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
         item_money.setText((String)bundle.getString("money"));
         item_distinct.setText((String)bundle.getString("address"));
         item_distance.setText((String)bundle.getString("distance"));
+
+        //添加百度地图覆盖物
+        markMymap();
+
+
 
         taskid=bundle.getString("taskid");
         Integer finisherid=userVo.getUserid();
@@ -135,6 +141,45 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
                         }
                     }
                 });
+    }
+
+    private void markMymap() {
+        //获取地理坐标
+        Double jingdu=taskVo.gettJingdu().doubleValue();
+        Double weidu=taskVo.gettWeidu().doubleValue();
+        LatLng GEO_LOCATION = new LatLng(weidu, jingdu);
+
+        //设置地图中心
+        MapStatusUpdate status1 = MapStatusUpdateFactory.newLatLng(GEO_LOCATION);
+        MapStatusUpdate status2 = MapStatusUpdateFactory.zoomTo(18);
+        bmapView.getMap().setMapStatus(status1);
+        bmapView.getMap().setMapStatus(status2);
+
+        // 构建markerOption，用于在地图上添加marker
+        BitmapDescriptor bitmap= BitmapDescriptorFactory.fromResource(R.mipmap.icon_marka);
+        OverlayOptions options = new MarkerOptions()//
+                .position(GEO_LOCATION)// 设置marker的位置
+                .icon(bitmap)// 设置marker的图标
+                .zIndex(9)// 設置marker的所在層級
+                .draggable(true);// 设置手势拖拽
+
+        // 在地图上添加marker，并显示
+        bmapView.getMap().addOverlay(options);
+    }
+
+    private void initMyview() {
+        item_userAvator=(ImageView)findViewById(R.id.detail_userAvator);
+        item_userName=(TextView)findViewById(R.id.detail_userName);
+        item_orderTitle=(TextView)findViewById(R.id.detail_orderTitle);
+        item_money=(TextView)findViewById(R.id.detail_money);
+        item_distinct=(TextView)findViewById(R.id.detail_distinct);
+        item_distance=(TextView)findViewById(R.id.detail_distance);
+        imageview_heart=(ImageView)findViewById(R.id.imageview_heart);
+
+        button_order_done=(BootstrapButton)findViewById(R.id.button_order_done);
+        button_start_message=(BootstrapButton)findViewById(R.id.button_start_message);
+
+        bmapView=findViewById(R.id.bmapView);
     }
 
     @Override

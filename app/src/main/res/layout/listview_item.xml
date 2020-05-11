@@ -76,20 +76,7 @@
                 android:text="0.00"
                 android:textSize="17dp"
                 android:textColor="@color/colorRed"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/item_distinct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/item_userName"
-                android:layout_alignLeft="@id/item_userName"
-                android:singleLine="true"
-                android:hint="行政区"/>
-<!--            竖线-->
+            <!--            竖线-->
             <View
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
@@ -106,6 +93,20 @@
                 android:layout_alignLeft="@id/item_userName"
                 android:textColor="@color/colorTopBar"
                 android:text="距离"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/item_distinct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_userName"
+                android:layout_alignLeft="@id/item_userName"
+                android:singleLine="true"
+                android:hint="行政区"/>
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
