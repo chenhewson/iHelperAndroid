@@ -27,14 +27,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp">
             <TextView
                 android:id="@+id/item_orderTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_userName"
                 android:layout_alignLeft="@id/item_userName"
-                android:layout_marginTop="5dp"
                 android:textSize="20sp"
                 android:textColor="@color/colorBlack"
                 android:text="任务标题"
@@ -50,7 +50,6 @@
                 android:textSize="20sp"
                 android:textColor="@color/colorRed"/>
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/item_userName"
@@ -78,8 +77,8 @@
                 android:textColor="@color/colorRed"/>
             <!--            竖线-->
             <View
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_width="1dp"
                 android:layout_height="15dp"
                 android:background="#c8c8c8"
@@ -92,7 +91,8 @@
                 android:layout_below="@id/item_userName"
                 android:layout_alignLeft="@id/item_userName"
                 android:textColor="@color/colorTopBar"
-                android:text="距离"/>
+                android:text="距离"
+                android:textSize="17dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

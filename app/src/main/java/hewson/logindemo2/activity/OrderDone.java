@@ -23,6 +23,8 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.imsdk.TIMConversationType;
@@ -81,7 +83,7 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
         taskVo=(TaskVo) gson.fromJson(bundle.getString("TaskVo"),new TypeToken<TaskVo>(){}.getType());
 
         //从bundle获取参数
-        item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
+        loadGlide(bundle.getString("item_userAvator"),item_userAvator);
         item_userName.setText((String)bundle.getString("item_userName"));
         item_orderTitle.setText((String)bundle.getString("item_orderTitle"));
         item_money.setText((String)bundle.getString("money"));
@@ -279,4 +281,11 @@ public class OrderDone extends AppCompatActivity implements View.OnClickListener
             }
         }
     };
+
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(this).load(mUrl).apply(requestOptions).into(mImageView);
+    }
 }

@@ -7,16 +7,19 @@ import com.baidu.mapapi.SDKInitializer;
 import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.qiniu.android.common.FixedZone;
 import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UploadManager;
 import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.tencent.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.tencent.qcloud.tim.uikit.config.GeneralConfig;
 import com.tencent.qcloud.tim.uikit.config.TUIKitConfigs;
 
+import java.util.Map;
+
 import hewson.logindemo2.common.Const;
 
 public class bootstrapApplication extends Application {
+    // 用于存放倒计时时间
+    public static Map<String, Long> map;
     @Override
     public void onCreate() {
         super.onCreate();

@@ -27,6 +27,7 @@ import hewson.logindemo2.R;
 import hewson.logindemo2.activity.MyAdapter.Myadapter_orderclassfier;
 import hewson.logindemo2.common.Const;
 import hewson.logindemo2.utils.ActivityCollectorUtil;
+import hewson.logindemo2.utils.AvatarUrl;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.myUserInfo;
@@ -108,6 +109,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                             Map<String, Object> map = new HashMap<String, Object>();
                                             if (!item.gettIsdone()) {
                                                 map.put("TaskVo", item);
+                                                map.put("avatar", AvatarUrl.getAvatarUrl());
                                                 listmapTemp.add(map);
                                             }
                                         }
@@ -148,6 +150,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                             Map<String, Object> map = new HashMap<String, Object>();
                                             //已发布
                                             map.put("TaskVo", item);
+                                            map.put("avatar", AvatarUrl.getAvatarUrl());
                                             listmapTemp.add(map);
                                         }
                                         listmap.addAll(listmapTemp);
@@ -187,6 +190,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                             Map<String, Object> map = new HashMap<String, Object>();
                                             if (item.gettIsdone() ) {
                                                 map.put("TaskVo", item);
+                                                map.put("avatar", AvatarUrl.getAvatarUrl());
                                                 listmapTemp.add(map);
                                             }
                                         }
@@ -229,13 +233,14 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                         String taskStr=gson.toJson(taskVo,new TypeToken<TaskVo>(){}.getType());
                                         bundle.putString("TaskVo",taskStr);
                                         //把参数放到bundle，实现activity传参
-                                        bundle.putInt("item_userAvator", R.mipmap.icon_avatar);
+                                        bundle.putString("item_userAvator", (String)map.get("avatar"));
                                         bundle.putString("item_userName", taskVo.gettDetail());
                                         bundle.putString("item_orderTitle", taskVo.gettTitle());
                                         bundle.putString("distance", "");
                                         bundle.putString("address", taskVo.gettAddress());
                                         bundle.putString("money", String.valueOf(taskVo.gettMoney()));
                                         bundle.putString("taskid", String.valueOf(taskVo.getTaskid()));
+                                        bundle.putString("tencent_message_id", String.valueOf(taskVo.getPublishuserid()));
 
                                         Intent intent = new Intent(myinfo_orderclassfier_activity.this, OrderDone.class);
                                         intent.putExtras(bundle);
@@ -264,7 +269,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                         String taskStr=gson.toJson(taskVo,new TypeToken<TaskVo>(){}.getType());
                                         bundle.putString("TaskVo",taskStr);
                                         //把参数放到bundle，实现activity传参
-                                        bundle.putInt("item_userAvator", R.mipmap.icon_avatar);
+                                        bundle.putString("item_userAvator", (String)map.get("avatar"));
                                         bundle.putString("item_userName", taskVo.gettDetail());
                                         bundle.putString("item_orderTitle", taskVo.gettTitle());
                                         bundle.putString("distance", "");
@@ -272,6 +277,7 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                         bundle.putString("money", String.valueOf(taskVo.gettMoney()));
                                         bundle.putString("taskid", String.valueOf(taskVo.getTaskid()));
                                         bundle.putBoolean("isdone", taskVo.gettIsdone());
+                                        bundle.putString("tencent_message_id", String.valueOf(taskVo.getFinisherid()));
                                         Intent intent = new Intent(myinfo_orderclassfier_activity.this, OrderSendMoney.class);
                                         intent.putExtras(bundle);
                                         startActivity(intent);
@@ -304,13 +310,14 @@ public class myinfo_orderclassfier_activity extends AppCompatActivity implements
                                     //把参数放到bundle，实现activity传参
                                     bundle.putString("taskVo", taskStr);
 
-                                    bundle.putInt("item_userAvator", R.mipmap.icon_avatar);
+                                    bundle.putString("item_userAvator", (String)map.get("avatar"));
                                     bundle.putString("item_userName", taskVo.gettDetail());
                                     bundle.putString("item_orderTitle", taskVo.gettTitle());
                                     bundle.putString("distance", "");
                                     bundle.putString("address", taskVo.gettAddress());
                                     bundle.putString("money", String.valueOf(taskVo.gettMoney()));
                                     bundle.putString("taskid", String.valueOf(taskVo.getTaskid()));
+                                    bundle.putString("tencent_message_id", String.valueOf(taskVo.getPublishuserid()));
                                     bundle.putBoolean("isdone", taskVo.gettIsdone());
                                     Intent intent = new Intent(myinfo_orderclassfier_activity.this, OrderMyDone.class);
                                     intent.putExtras(bundle);

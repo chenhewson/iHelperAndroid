@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <LinearLayout
-                android:paddingBottom="10sp"
+                android:layout_marginBottom="10sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
@@ -32,16 +32,28 @@
                     android:textSize="40sp"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-            <com.beardedhen.androidbootstrap.BootstrapEditText
-                android:id="@+id/register_username"
+            <LinearLayout
+                android:layout_marginBottom="5sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="用户名"
-                app:roundedCorners="true"
-                bootstrapSize="md"
-                app:bootstrapBrand="primary"
-                />
+                >
+                <com.beardedhen.androidbootstrap.BootstrapEditText
+                    android:id="@+id/register_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="用户名"
+                    app:roundedCorners="true"
+                    bootstrapSize="md"
+                    app:bootstrapBrand="primary"
+                    />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
             <com.beardedhen.androidbootstrap.BootstrapEditText
                 android:id="@+id/register_password"
                 android:layout_width="match_parent"
@@ -53,6 +65,13 @@
                 bootstrapSize="md"
                 app:bootstrapBrand="primary"
                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginBottom="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
             <com.beardedhen.androidbootstrap.BootstrapEditText
                 android:id="@+id/register_email"
                 android:layout_width="match_parent"
@@ -64,16 +83,47 @@
                 bootstrapSize="md"
                 app:bootstrapBrand="primary"
                 />
+        </LinearLayout>
+            <LinearLayout
+                android:layout_marginBottom="5sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <com.beardedhen.androidbootstrap.BootstrapEditText
+                    android:id="@+id/register_email_code"
+                    android:layout_width="0dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    app:roundedCorners="true"
+                    android:hint="验证码"
+                    bootstrapSize="md"
+                    app:bootstrapBrand="primary"
+                    />
+                <hewson.logindemo2.application.TimeButton
+                    android:id="@+id/sendCode_button"
+                    android:background="@drawable/mybutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:text="发送验证码"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/confirmRegister_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="确认"
+                android:text="确认注册"
+                android:textSize="15dp"
                 android:textStyle="bold"
                 app:bootstrapBrand="primary"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"
-                app:showOutline="false"
+                app:showOutline="true"
                 app:roundedCorners="true"
                 android:layout_marginBottom="10dp"
                 />

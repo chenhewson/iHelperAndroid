@@ -29,6 +29,7 @@ import hewson.logindemo2.R;
 import hewson.logindemo2.activity.MyAdapter.Myadapter_star;
 import hewson.logindemo2.activity.OrderDetail;
 import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.AvatarUrl;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.myUserInfo;
@@ -102,6 +103,8 @@ public class star_fragment extends Fragment {
                             for (TaskVo item:taskVoList){
                                 Map<String,Object> map=new HashMap<String,Object>();
                                 map.put("TaskVo",item);
+                                //头像
+                                map.put("avatar", AvatarUrl.getAvatarUrl());
                                 listmapTemp.add(map);
                             }
                             listmap.addAll(listmapTemp);
@@ -127,11 +130,12 @@ public class star_fragment extends Fragment {
                         Bundle bundle = new Bundle();
                         Map<String,Object> map= (Map<String, Object>) myadapter_star.getItem(position);
                         TaskVo taskVo= (TaskVo) map.get("TaskVo");
+                        String avatar=(String)map.get("avatar");
 
 
 
                         //把参数放到bundle，实现activity传参
-                        bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
+                        bundle.putString("item_userAvator",avatar);
                         bundle.putString("item_userName",taskVo.gettDetail());
                         bundle.putString("item_orderTitle",taskVo.gettTitle());
                         bundle.putString("distance","");

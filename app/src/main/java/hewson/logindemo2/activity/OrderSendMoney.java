@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.imsdk.TIMConversationType;
@@ -78,7 +80,7 @@ public class OrderSendMoney extends AppCompatActivity implements View.OnClickLis
 
 
         //从bundle获取参数
-        item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
+        loadGlide(bundle.getString("item_userAvator"),item_userAvator);
         item_userName.setText(taskVo.gettDetail());
         item_orderTitle.setText(taskVo.gettTitle());
         item_money.setText(String.valueOf(taskVo.gettMoney()));
@@ -87,7 +89,7 @@ public class OrderSendMoney extends AppCompatActivity implements View.OnClickLis
         boolean isDone=taskVo.gettIsdone();
         boolean isDestroy=taskVo.gettIsdestroy();
         if(isDone&&!isDestroy){
-            item_note.setText("(请前往打赏)");
+            item_note.setText("(对方已完成!请前往打赏)");
         }else {
             item_note.setText("(对方还未完成)");
         }
@@ -274,4 +276,11 @@ public class OrderSendMoney extends AppCompatActivity implements View.OnClickLis
             }
         }
     };
+
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(this).load(mUrl).apply(requestOptions).into(mImageView);
+    }
 }

@@ -26,6 +26,8 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.imsdk.TIMConversationType;
@@ -83,7 +85,9 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
         userVo= myUserInfo.getuser(OrderDetail.this);
 
         //从bundle获取参数
-        item_userAvator.setImageResource(bundle.getInt("item_userAvator"));
+        String avatar=bundle.getString("item_userAvator");
+        //加载头像
+        loadGlide(avatar,item_userAvator);
         item_userName.setText((String)bundle.getString("item_userName"));
         item_orderTitle.setText((String)bundle.getString("item_orderTitle"));
         item_money.setText((String)bundle.getString("money"));
@@ -239,7 +243,9 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
 
                                 //将泛型解析成String对象：new TypeToken<ServerResponse<String>>(){}.getType()
                                 ServerResponse<String> serverResponse = gson.fromJson(msg, new TypeToken<ServerResponse<String>>(){}.getType());
+                                Looper.prepare();
                                 Toast.makeText(OrderDetail.this,serverResponse.getMsg(), Toast.LENGTH_LONG).show();
+                                Looper.loop();
                             }
                         });
                 //跳转到任务接受成功界面
@@ -273,6 +279,13 @@ public class OrderDetail extends AppCompatActivity implements View.OnClickListen
             }
         }
     };
+
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(this).load(mUrl).apply(requestOptions).into(mImageView);
+    }
 
     @Override
     protected void onDestroy() {

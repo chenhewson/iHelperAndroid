@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,10 +38,13 @@ public class Myadapter_orderclassfier extends BaseAdapter {
 
     private int flag;
 
+    Context context;
+
     //构造器
     public Myadapter_orderclassfier(Context context,int flag) {
         this.inflater = LayoutInflater.from(context);
         this.flag=flag;
+        this.context=context;
     }
 
     //自动生成
@@ -87,8 +92,7 @@ public class Myadapter_orderclassfier extends BaseAdapter {
         //注入值,position是当前item的下标,这里map的key要和addorder_fragment里面的map对应
         Map<String, Object> map=list.get(position);
         TaskVo taskVo= (TaskVo) map.get("TaskVo");
-
-        item_userAvator.setImageResource(R.mipmap.icon_avatar);//后台需要重新定义一个实体类来保存复合信息
+        loadGlide((String)map.get("avatar"),item_userAvator);
         item_userName.setText(taskVo.gettDetail());
         item_orderTitle.setText(taskVo.gettTitle());
         item_money.setText(String.format("%.2f",taskVo.gettMoney()));
@@ -100,4 +104,10 @@ public class Myadapter_orderclassfier extends BaseAdapter {
         return view;
     }
 
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(context).load(mUrl).apply(requestOptions).into(mImageView);
+    }
 }

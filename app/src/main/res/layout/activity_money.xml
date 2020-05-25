@@ -24,8 +24,8 @@
                 android:gravity="center"
                 >
                 <ImageView
-                    android:layout_width="70sp"
-                    android:layout_height="70sp"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
                     android:src="@drawable/icon_balance"/>
             </LinearLayout>
             <LinearLayout
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="我的零钱"
-                    android:textSize="20dp"/>
+                    android:textSize="15dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -57,7 +57,7 @@
                     android:gravity="center"
                     android:text="0.00"
                     android:textStyle="bold"
-                    android:textSize="25dp"/>
+                    android:textSize="30dp"/>
             </LinearLayout>
 
             <LinearLayout

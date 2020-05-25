@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.imsdk.TIMConversationType;
@@ -149,6 +151,13 @@ public class OrderMyDone extends AppCompatActivity implements View.OnClickListen
                 OrderMyDone.this.finish();
             }break;
         }
+    }
+
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(this).load(mUrl).apply(requestOptions).into(mImageView);
     }
 
     @Override

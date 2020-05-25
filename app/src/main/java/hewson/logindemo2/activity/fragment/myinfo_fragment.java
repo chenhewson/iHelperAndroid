@@ -75,7 +75,7 @@ public class myinfo_fragment extends Fragment implements View.OnClickListener{
     //加载图片工具类
     private void loadGlide(String mUrl,ImageView mImageView) {
         RequestOptions requestOptions = new RequestOptions()
-                .error(R.mipmap.icon_nothing);
+                .error(R.mipmap.icon_avatar);
         Glide.with(this)
                 .load(mUrl)
                 .apply(requestOptions)

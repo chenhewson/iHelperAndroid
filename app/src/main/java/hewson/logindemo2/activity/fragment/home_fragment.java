@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -41,6 +43,7 @@ import hewson.logindemo2.activity.home_activity;
 import hewson.logindemo2.activity.login_activity;
 import hewson.logindemo2.activity.register_activity;
 import hewson.logindemo2.common.Const;
+import hewson.logindemo2.utils.AvatarUrl;
 import hewson.logindemo2.utils.OkHttpCallback;
 import hewson.logindemo2.utils.OkhttpUtils;
 import hewson.logindemo2.utils.SharePreferencesUtil;
@@ -153,6 +156,9 @@ public class home_fragment extends Fragment implements View.OnClickListener{
 
                                     //任务距离
                                     map.put("distance",showDistance(keyStr));
+
+                                    //头像
+                                    map.put("avatar",AvatarUrl.getAvatarUrl());
                                     listmapTemp.add(map);
                                 }
                             }
@@ -196,8 +202,11 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                         //获取距离
                         String distance=(String)map.get("distance");
 
+                        //获取头像
+                        String avatar=(String)map.get("avatar");
+
                         //把参数放到bundle，实现activity传参
-                        bundle.putInt("item_userAvator",R.mipmap.icon_avatar);
+                        bundle.putString("item_userAvator",avatar);
                         bundle.putString("item_userName",taskVo.gettDetail());
                         bundle.putString("item_orderTitle",taskVo.gettTitle());
                         bundle.putString("distance",distance);
@@ -214,10 +223,16 @@ public class home_fragment extends Fragment implements View.OnClickListener{
                     }
                 }
         );
-//        //3.设置适配器,用自定义adapter
-//        myadapter_home.setList(listmap);//给数据
-//        myadapter_home.notifyDataSetChanged();
-//        listView_home.setAdapter(myadapter_home);
+    }
+
+    //加载图片工具类
+    private void loadGlide(String mUrl,ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions()
+                .error(R.mipmap.icon_nothing);
+        Glide.with(this)
+                .load(mUrl)
+                .apply(requestOptions)
+                .into(mImageView);
     }
 
     private Handler mHandler = new Handler(){

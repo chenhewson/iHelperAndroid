@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import hewson.logindemo2.R;
+import hewson.logindemo2.utils.AvatarUrl;
 import hewson.logindemo2.vo.TaskVo;
 
 /*
@@ -70,15 +71,18 @@ public class Myadapter_home extends BaseAdapter {
 
         //注入值,position是当前item的下标,这里map的key要和addorder_fragment里面的map对应
         Map map=list.get(position);
-        String imagepath="http://img.xiaosen.fun/IMG_0878%2820200426-191036%29.JPG?e=1587903650&token=xHa90Wn7oBwBcoeJAmmQVAGkRRAM_2BBaRpHfD-l:AgaTMboydoVQ1eAgTJ03iwh_5CA=&attname=";
-        //图片显示框架
-        loadGlide(imagepath,item_userAvator);
 
         //获取任务实体类
         TaskVo taskVo= (TaskVo) map.get("taskVo");
 
         //获取距离
         String distance=(String)map.get("distance");
+
+        //获取头像
+        String avatar=(String)map.get("avatar");
+
+        //加载头像
+        loadGlide(avatar,item_userAvator);
 
         //把值设定到组件上
         item_userName.setText(taskVo.gettDetail());

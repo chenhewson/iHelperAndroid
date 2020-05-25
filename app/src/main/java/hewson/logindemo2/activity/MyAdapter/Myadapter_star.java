@@ -9,14 +9,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 import java.util.Map;
 
 import hewson.logindemo2.R;
+import hewson.logindemo2.utils.AvatarUrl;
 import hewson.logindemo2.vo.TaskVo;
 
 public class Myadapter_star extends BaseAdapter {
     List<Map<String,Object>> list;
+    Context context;
 
     //反射器
     LayoutInflater inflater;
@@ -24,6 +29,7 @@ public class Myadapter_star extends BaseAdapter {
     //构造器
     public Myadapter_star(Context context){
         this.inflater = LayoutInflater.from(context);
+        this.context=context;
     }
     //自动生成
     public void setList(List<Map<String, Object>> list) {
@@ -64,9 +70,11 @@ public class Myadapter_star extends BaseAdapter {
         //注入值,position是当前item的下标,这里map的key要和addorder_fragment里面的map对应
         Map<String, Object> map=list.get(position);
         TaskVo taskVo= (TaskVo) map.get("TaskVo");
-        Log.i("taskVo",taskVo.toString());
+        String avatar=(String)map.get("avatar");
 
-        item_userAvator.setImageResource(R.mipmap.icon_avatar);//后台需要重新定义一个实体类来保存复合信息
+        //图片显示框架
+        loadGlide(avatar,item_userAvator);
+
         item_userName.setText(taskVo.gettDetail());
         item_orderTitle.setText(taskVo.gettTitle());
         item_money.setText(String.format("%.2f",taskVo.gettMoney()));
@@ -76,5 +84,12 @@ public class Myadapter_star extends BaseAdapter {
 //        map.put("distance",keyStr);
 //        map.put("address",taskVo.gettAddress());
         return view;
+    }
+
+    //加载图片工具类
+    private void loadGlide(String mUrl, ImageView mImageView) {
+        RequestOptions requestOptions = new RequestOptions().placeholder(R.mipmap.icon_avatar)
+                .error(R.mipmap.icon_avatar);
+        Glide.with(context).load(mUrl).apply(requestOptions).into(mImageView);
     }
 }
